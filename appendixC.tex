@@ -74,8 +74,8 @@ Similar to the definition of the reduction relation, we assume a typing judgemen
     \inferrule*[right=$\oplus$-E]
     { \Sigma\mid\Gamma \vdash M^* : A \oplus B \\
     \Sigma\mid\Gamma, x : A \vdash N^* : C \\
-    \Sigma\mid\Gamma, y : B \vdash P : C }
-    { \Sigma\mid\Gamma \vdash \texttt{match}\ M^*\ [x\Rightarrow N^*\mid y\Rightarrow P] : C }
+    \Sigma\mid\Gamma, y : B \vdash P^* : C }
+    { \Sigma\mid\Gamma \vdash \texttt{match}\ M^*\ [x\Rightarrow N^*\mid y\Rightarrow P^*] : C }
   \end{mathpar}
   \caption{Typing rules}
   \label{fig:typing}
