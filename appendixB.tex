@@ -1,0 +1,23 @@
+\section{Proof of conservativity}
+\begin{lem} \label{lem:classical-eval}
+  For any $M \in \Lambda$, $M \Downarrow$ iff $M \Downarrow_\beta$.
+\end{lem}
+\begin{proof}
+\end{proof}
+
+\ConservTheorem*
+\begin{proof}[Proof]
+  (\textbf{Sufficiency})
+  \\
+  (\textbf{Necessity})
+  Proof by contradiction.
+  We assume $M \not\approx_{\beta} N$ for $M, N \in \Lambda$, and show that this implies $M \not\approx N$.
+  The assumption $M \not\approx_{\beta} N$ means there exists a classical context $C[\cdot] \in \Lambda$ that distinguishes $M$ and $N$ in the classical fragment.
+  Without loss of generality, let's assume $C[M] \Downarrow_\beta$ while $C[N] \Downarrow_\beta$ does not hold.
+
+  Since $C[M] \Downarrow_\beta$, Lemma~\ref{lem:classical-eval} implies that $C[M] \Downarrow$.
+  Since the evaluation of $C[N]$ under the classical rules diverges, the lemma implies that the evaluation of $C[N]$ in the full semantics must also diverge.
+
+  Thus, the very same classical context $C[\cdot] \in \Lambda$ (which is also a valid context in $\Lambda(\mathcal{U})$) serves to distinguish $M$ and $N$ in the full quantum semantics.
+  This establishes that $M \not\approx N$, completing the proof of the contrapositive.
+\end{proof}

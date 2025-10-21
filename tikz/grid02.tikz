@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+  \draw[step=1cm, color=gray] (0,0) grid (1,2);
+  \node (scal) at (-0.5,1.5) {$\alpha$}; \node[mem] (mem2) at (0.5,1.5) {$0$};
+  \node at (-0.5,0.5) {$\beta$}; \node[mem] at (0.5,0.5) {$1$};
+  \node[op, above=0.8cm of mem2] (op2) {$l_1$};
+  \draw[arr, bend left=30] (op2.south) to (mem2.north);
+  \draw[arr, bend right=30] (op2.south) to (mem2.north);
+  \node[above=1.5cm of scal] {(2)};
+\end{tikzpicture}

@@ -1,0 +1,23 @@
+\subsection{Mathematical preliminaries for operational semantics} \label{sec:math-prelim}
+Our operational semantics relies on two key mathematical structures: $\ell^2$ \textit{space} to represent quantum states, and \textit{finite distributions} to model probabilistic reduction.
+
+\begin{dfn}[$\ell^2$ space]
+  Given a countable set $X$, define $\ell^2$ space as
+  \begin{equation*}
+    \ell^2(X) := \left\{\psi : X\to\mathbb{C}\ \left|\ \|\psi\| := \sum\nolimits_{x\in X} |\psi(x)|^2 < \infty \right.\right\},
+  \end{equation*}
+  and inner product $\langle \psi, \phi \rangle = \sum\nolimits_{x\in X} \overline{\psi(x)} \phi(x)$.
+  It is known that $(\ell^2(X), \langle\cdot,\cdot\rangle)$ forms a Hilbert space.
+\end{dfn}
+
+\begin{dfn}[Finite distributions]
+  Given a countable set $X$, define a set
+  \begin{equation*}
+    \mathcal{D}(X) := \left\{\mu : X \to \ [0,1] \left|\ |\mu| := \sum\nolimits_{x\in X} \mu(x) = 1,\ |\mathrm{supp}(\mu)| < \infty\right.\right\}.
+  \end{equation*}
+\end{dfn}
+Any element of $\ell^2(X)$ and $\mathcal{D}(X)$ can be written as linear combinations: $\psi = \sum_{x\in X} \psi(x) \delta_x$ and $\mu = \sum_{x\in X} \mu(x)\delta_x$ respectively, where $\delta_x$ is defined by $\delta_x(y) = 1$ if $y = x$ and $0$ otherwise.
+
+Next, we utilize two linear map constructions for $\ell^2$.
+The first is the functorial action of $\ell^2$, which lifts any function $f: X \to Y$ to a linear map $\ell^2(f): \ell^2(X) \to \ell^2(Y)$ defined by $\ell^2(f)(\delta_x) := \delta_{f(x)}$.
+The second one extends a function $k: X \to \ell^2(Y)$ to a linear map $k^\sharp: \ell^2(X) \to \ell^2(Y)$ via linear extension: $k^\sharp(\sum_{x \in X} \alpha_x \delta_x) := \sum_{x \in X} \alpha_x k(x)$ only if the resulting sum converges for any input.

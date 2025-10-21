@@ -1,0 +1,57 @@
+\section{\texorpdfstring{The $\Lambda(\mathcal{U})$ calculus}{The Lambda(U) calculus}}
+\subsection{Syntax}
+As outlined in the introduction, our language is designed as a conservative extension of a non-linear lambda calculus denoted by $\Lambda$. $\Lambda$ is a set of terms including lambda terms, the unit and introductions and eliminations of products and sums. The key to our design is the isolation of quantum features from $\Lambda$, which is provided by a set $\mathcal{U}$ of external unitary operations.
+\begin{dfn}[The surface language $\Lambda(\mathcal{U})$]
+  Given a set of terms $\mathcal{U}$, the language $\Lambda(\mathcal{U})$ is a set of terms defined by the following syntax:
+  \begin{equation*}
+    \begin{array}{rl}
+      M, N, P \Coloneqq & *\mid x\mid\lambda x. M\mid M\ N\mid\langle M, N\rangle\mid\texttt{inj}_0\ M\mid\texttt{inj}_1\ M \mid \\& \texttt{let}\ \langle x, y\rangle=M\ \texttt{in}\ N\mid\texttt{match}\ M\ [x\Rightarrow N\mid y\Rightarrow P]\mid\hat{U}
+    \end{array}
+  \end{equation*}
+  where $\hat{U}\in\mathcal{U}$. Alternatively, $\Lambda(\mathcal{U})$ is defined as $\Lambda\cup\mathcal{U}$.
+\end{dfn}
+
+From the perspective of the host language $\Lambda(\cdot)$, $\hat{U}$ is treated as an opaque, first-class value.
+The language $\mathcal{U}$ can represent any unitary transformation, ranging from a simple unitary gate to a complex subroutine that could be described by a domain-specific language, such as one based on the 'Quantum Data, Quantum Control' paradigm.
+\begin{ex} \label{ex:classical}
+  The classical bit can be represented as $i \equiv \texttt{inj}_i\ *$ where $i=0,1$.
+  A standard conditional expression $\texttt{if}\ M\ \texttt{then}\ N\ \texttt{else}\ P$ can be written as a syntactic sugar for $\texttt{match}\ M\ [x\Rightarrow N\mid y\Rightarrow P]$, where $x$ and $y$ are fresh variables.
+  Using these notations, the logical NOT is $\textit{not} \equiv \lambda x.\texttt{if}\ x\ \texttt{then}\ 1\ \texttt{else}\ 0$, and the logical AND is $\textit{and} \equiv \lambda x.\lambda y.\texttt{if}\ x\ \texttt{then}\ y\ \texttt{else}\ 0$.
+\end{ex}
+The quantum aspect of the language is captured by the $\hat{U}$ term.
+Match expressions need special attention in this context.
+It behaves as usual only when the outermost of the scrutinee is evaluated to inl or inr.
+When it is evaluated to superposition of inl and inr, it performs a measurement to project one of them before that.
+\begin{ex}[Quantum teleportation] \label{ex:teleportation}
+  Let $\mathcal{U}$ be $\{H,CNOT,Z,X\}$ as the standard quantum gate set.
+  The following program implements the quantum teleportation circuit on the right:
+  \begin{center}
+    \begin{minipage}{0.40\textwidth}
+      \begin{equation*}
+        \begin{array}{l}
+          \texttt{let}\ \langle a, b\rangle=CNOT\ \langle H\ 0, 0\rangle\ \texttt{in}           \\
+          \texttt{let}\ \langle x, y\rangle=CNOT\ \langle q, a\rangle\ \texttt{in}              \\
+          \texttt{let}\ b' = \texttt{if}\ y\ \texttt{then}\ X\ b\ \texttt{else}\ b\ \texttt{in} \\
+          \texttt{if}\ H\ x\ \texttt{then}\ Z\ b'\ \texttt{else}\ b'
+        \end{array}
+      \end{equation*}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \hspace{1em}
+      \Qcircuit @C=0.8em @R=0.8em {
+      \lstick{q}       & \qw      & \qw      &           \qw & \ctrl{1} & \ustick{x}\qw &\gate{H}         &            \qw & \meter           & \\
+      \lstick{\ket{0}} & \gate{H} & \ctrl{1} & \ustick{a}\qw & \targ    & \ustick{y}\qw &\meter           &                & \cwx             & \\
+      \lstick{\ket{0}} & \qw      & \targ{}  & \ustick{b}\qw & \qw      &           \qw &\gate{X}\cwx{-1} & \ustick{b'}\qw & \gate{Z}\cwx{-2} & \qw
+      }
+    \end{minipage}
+  \end{center}
+  where $\texttt{let}\ x = M\ \texttt{in}\ N$ is a syntactic sugar for $(\lambda x. N)\ M$.
+\end{ex}
+It should be noted that the \textit{not} function in Example \ref{ex:classical} does not behave as the $X$ gate (or the quantum NOT gate) when applied to a qubit, because the input is measured in the condition of the if expression, which collapses any superposition.
+
+As a powerful example of this encapsulation of $\mathcal{U}$, a syntax inspired by pattern isomorphism\cite{SABRY2018_SymmetricPatternMatchingQuantum} allows for the direct declaration of unitary operations as follows.
+\begin{ex}[Pattern isomorphism for unitaries]
+  Let $\mathcal{U}$ be defined using the pattern isomorphism syntax.
+  For instance, $X$ gate can be defined as $X \equiv \{0 \leftrightarrow 1\mid 1 \leftrightarrow 0\}$.
+\end{ex}

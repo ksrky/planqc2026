@@ -1,0 +1,88 @@
+\subsection{Operational semantics}
+This section defines the operational semantics, describing how the reference-based semantics from Section~\ref{sec:main-idea} is formalized.
+The state of a computation is captured by a \textit{configuration}: a pair of a global store and the term being evaluated.
+Crucially, the store holds the physical quantum state, while the term operates only on locations ($\mathcal{L}$)--references to that store.
+This separation allows contraction and weakening to be treated as logical operations on references, without directly affecting the physical quantum state.
+Because a term is rewritten to contain these locations during execution, we must first define a distinct runtime language that extends the surface syntax with them.
+
+\begin{dfn}[The runtime language $\Lambda_\mathcal{L}(\mathcal{U})$]
+  Given a finite set of store locations $\mathcal{L}$, the runtime language is defined as $\Lambda_\mathcal{L}(\mathcal{U}) := \Lambda(\mathcal{U})\cup\mathcal{L}$.
+  We use $M^*, N^*, P^*$ to denote runtime terms.
+\end{dfn}
+
+Only first-order, or \textit{basis values}, can be placed in the store and exist in a superposition.
+Values and basis values are given by the following syntax.
+\begin{equation*}
+  \begin{array}{lrl}
+    \text{Values}       & V, W \Coloneqq             & *\mid\lambda x. M\mid\langle V, W\rangle\mid\texttt{inj}_0\ V\mid\texttt{inj}_1\ V\mid\hat{U} \\
+    \text{Basis values} & \hat{V}, \hat{W} \Coloneqq & *\mid\langle\hat{V}, \hat{W}\rangle\mid\texttt{inj}_0\ \hat{V}\mid\texttt{inj}_1\ \hat{V}
+  \end{array}
+\end{equation*}
+The set of all values is denoted by $\mathcal{V}$ and the set of all basis values by $\mathcal{V}_0$, which is a subset of $\mathcal{V}$.
+
+A configuration $[\sigma, M^*]$ represents the state of a computation.
+The quantum store $\sigma$ is a vector in a free Hilbert space over value stores (finite maps from locations $\mathcal{L}$ to basis values $\mathcal{V}_0$), while $M^*$ is the runtime term containing references to $\sigma$.
+The set of all configurations is denoted by $\mathcal{C}$.
+
+The operational semantics are defined by a call-by-value, small-step reduction relation ($\longrightarrow$).
+The key rules in Fig.~\ref{fig:reduction} directly correspond to the four postulates of quantum mechanics\cite{NIELSEN2010_QuantumComputationQuantum}.
+%For each rule, the extension of quantum stores lifts a function $f$ over a value store $\rho$ to a function over $\sigma$ using $\ell^2(f)$ and $f^\sharp$ extension described in Section~\ref{sec:math-prelim}.
+\begin{description}
+  \item[State preparation (\textsc{Q-Prep})] It prepares a quantum state by taking a classical basis value $\hat{V}$ and placing it into the store at a new location $l$.
+  \item[Unitary Evolution (\textsc{Q-Evolve})] Applying a unitary $\hat{U}$ to a reference $l_1$ transforms the entire quantum store $\sigma$ according to the operator's definition.
+        The location $l_1$ stays in the store, which reflects the 'Contraction as sharing' mechanism as illustrated in Fig.~\ref{fig:grids}.
+  \item[Measurement (\textsc{Q-Meas})] The match expression performs a measurement on a referenced state, causing the computation to branch probabilistically and collapsing the quantum store.
+  \item[Composite system (\textsc{Q-Destr})] It destructs a pair stored at $l_1$ and creates new, distinct references $l_2$, $l_3$ to its components.
+        It copies values on each value store, not meaning that the quantum store is cloned.
+\end{description}
+
+This semantics imposes a meta-level constraint on $\hat{U}$.
+Specifically, the \textit{interpretation} $\llbracket\hat{U}\rrbracket_\mathcal{U} : \mathcal{V}_0\rightharpoonup \ell^2(\mathcal{V}_0)$ must be a unitary operator; that is; if $U = \llbracket\hat{U}\rrbracket_\mathcal{U}$, then $(U|_{\mathrm{dom}(U)})^\sharp$ is unitary.
+\begin{dfn}[Small-step reduction] \label{def:single-step}
+  Given a set of partial functions $\llbracket\hat{U}\rrbracket_\mathcal{U}$ for $\hat{U}\in\mathcal{U}$, the reduction relation $\longrightarrow \subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation closed under the classical rules (Appendix~\ref{sec:opsem-full}) and the quantum rules (Fig.~\ref{fig:reduction}).
+  The relation is then extended to all evaluation contexts $E$ via the standard congruence rule: if $[\sigma,M] \longrightarrow \mu$, then $[\sigma,E[M]] \longrightarrow \sum_{[\sigma',M']\in\mathrm{supp}(\mu)}\mu([\sigma',M'])\delta_{[\sigma',E[M']]}$.
+  The definition of evaluation contexts is given in Appendix~\ref{sec:opsem-full}.
+\end{dfn}
+
+\begin{figure}[t]
+  \centering
+  \begin{mathpar}
+    \inferrule*[right=Q-Destr]
+    {f(\rho) = \rho\cup\{(l_2,\hat{V}),(l_3, \hat{W})\}\text{ where } \rho(l_1) = \langle \hat{V}, \hat{W}\rangle \\ l_2, l_3 \notin \mathrm{dom}(\sigma)}
+    {[\sigma, \texttt{let}\ \langle x, y\rangle=l_1\ \texttt{in}\ M^*] \longrightarrow \delta_{[\ell^2(f)(\sigma), M^*[l_2/x,l_3/y]]}}
+    \and
+    \inferrule*[right=Q-Meas]
+    {|\alpha_0|^2 + |\alpha_1|^2 = 1 \\ ||\sigma_0|| = ||\sigma_1|| \\ f_0(\rho) = \rho\cup\{(l_2,\hat{V})\}\text{ where } \rho(l_1) = \texttt{inj}_0\ \hat{V} \\ f_1(\rho) = \rho\cup\{(l_3,\hat{W})\}\text{ where } \rho(l_1) = \texttt{inj}_1\ \hat{W} \\ l_2 \notin \mathrm{dom}(\sigma_0) \\ l_3 \notin \mathrm{dom}(\sigma_1)}
+    {[\alpha_0\sigma_0 + \alpha_1\sigma_1, \texttt{match}\ l_1\ [y\Rightarrow M^*\mid z\Rightarrow N^*]] \\
+    \longrightarrow |\alpha_0|^2 \delta_{[\ell^2(f_0)(\sigma_0), M^*[l_2/y]]} + |\alpha_1|^2\delta_{[\ell^2(f_1)(\sigma_1),N^*[l_3/z]]}}
+    \and
+    \inferrule*[right=Q-Prep]
+    {f(\rho) = \rho\cup\{(l, \hat{V})\} \\ l \notin \mathrm{dom}(\sigma)}
+    {[\sigma, \hat{U}\ \hat{V}] \longrightarrow \delta_{[\ell^2(f)(\sigma), \hat{U}\ l]}}
+    \and
+    \inferrule*[right=Q-Evolve]
+    { f(\rho) = \sum\nolimits_{\hat{V}}\llbracket\hat{U}\rrbracket_\mathcal{U}(\rho(l_1))(\hat{V})\delta_{\rho\cup\{(l_2, \hat{V})\}} \\ l_2 \notin \mathrm{dom}(\sigma)}
+    {[\sigma, \hat{U}\ l_1] \longrightarrow \delta_{[f^\sharp(\sigma),l_2]}}
+  \end{mathpar}
+  \caption{Quantum reduction rules}
+  \Description{Four inference rules defining the quantum reduction steps. The first rule (\textsc{Q-Destr}) describes the decomposition of a pair in the store into two new locations. The second rule (\textsc{Q-Meas}) details the measurement process, branching based on the superposition of states. The third rule (\textsc{Q-Prep}) covers state preparation by placing a basis value into the store. The fourth rule (\textsc{Q-Evolve}) explains the application of a unitary operator to a location, transforming the quantum state accordingly.}
+  \label{fig:reduction}
+\end{figure}
+
+A key property to the physical realizability of the semantics is norm preservation, which guarantees that the norm of the quantum state does not change during reduction.
+\begin{restatable}[Norm preservation]{thm}{NormpresTheorem} \label{thm:norm-pres}
+  If $[\sigma,M] \longrightarrow \mu$, then for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $||\sigma'|| = ||\sigma||$.
+\end{restatable}
+
+Since a single reduction step can yield a distribution of configurations, the \textit{multi-step reduction} ($\longrightarrow^*$) is not a simple reflexive and transitive closure. Instead, it is defined inductively to compose these probabilistic outcomes, akin to a monadic bind.
+\begin{dfn}[Multi-step reduction]
+  The multi-step reduction relation $\longrightarrow^* \subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation satisfying:
+  \begin{itemize}
+    \item $[\sigma,M] \longrightarrow^* \delta_{[\sigma,M]}$ for all $[\sigma,M]\in\mathcal{C}$.
+    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow^* \nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow^* \sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
+  \end{itemize}
+\end{dfn}
+
+\begin{dfn}[Termination]
+  A surface term $M$ is said to \emph{terminate} if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow^* \mu$, and for every $[\sigma, V] \in \mathrm{supp}(\mu)$, $V$ is a value; we denote this by $M \Downarrow$.
+\end{dfn}

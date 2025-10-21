@@ -1,0 +1,32 @@
+embed
+{{ tex-preamble
+\newcommand\token[1]{%
+  \texttt{#1}%
+}
+}}
+
+metavar x , y , z ::= {{ com variables }}
+
+grammar
+M , N , P :: 'term_' ::= {{ com integers }}
+  | *                           :: :: unit
+  | x                           :: :: var
+  | \ x . M                     :: :: lam   {{ tex \lambda [[x]]. [[M]] }}
+  | M @ N                       :: :: app   {{ tex [[M]]\ [[N]] }}
+  | ( M , N )                   :: :: pair  {{ tex \langle [[M]] , [[N]] \rangle }}
+  | inj0 M                      :: :: inj0  {{ tex \token{inj}_0\ [[M]] }}
+  | inj1 M                      :: :: inj1  {{ tex \token{inj}_1\ [[M]] }}
+  | let ( x , y ) = M in N      :: :: split {{ tex \token{let}\ \langle [[x]] , [[y]] \rangle = [[M]]\ \token{in}\ [[N]] }}
+  | match M [ x => N | y => P ] :: :: match {{ tex \token{match}\ [[M]]\ [ [[x]] \Rightarrow [[N]] \mid [[y]] \Rightarrow [[P]] ] }}
+  | U^                          :: :: unitary {{ tex \hat{U} }}
+
+V , W :: 'val_' :: {{ com values }}
+  | *                           :: :: unit
+  | x                           :: :: var
+  | \ x . M                     :: :: lam   {{ tex \lambda [[x]]. [[M]] }}
+  | ( V , W )                   :: :: pair  {{ tex \langle [[V]] , [[W]] \rangle }}
+  | inj0 V                      :: :: inj0  {{ tex \token{inj}_0\ [[V]] }}
+  | inj1 V                      :: :: inj1  {{ tex \token{inj}_1\ [[V]] }}
+
+subrules
+  V <:: M

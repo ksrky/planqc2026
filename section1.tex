@@ -1,0 +1,13 @@
+\section{Introduction} \label{sec:intro}
+The theoretical foundations of quantum programming languages have largely been built upon linear logic and its variants\cite{VANTONDER2004_LambdaCalculusQuantum,SELINGER2009_QuantumLambdaCalculus,ALTENKIRCH2005_FunctionalQuantumProgramming,SABRY2018_SymmetricPatternMatchingQuantum,ROSS2017_AlgebraicLogicalMethods}, reflecting the \textit{No-Cloning} Theorem and the \textit{No-Deleting} Theorem of quantum mechanics.
+Within this paradigm, variables representing quantum states are treated as 'linear' resources that can be neither duplicated (contracted) nor discarded (weakened).
+While this linearity ensures the physical correctness, it creates a significant gap with the intutions of classical, non-linear programming.
+
+This paper proposes a quantum language designed as a direct quantum extension of the normal (non-linear) lambda calculus.
+Our central design principle is to ensure this extension is conservative; that is, the operational equivalence of our extended language preserves that of the original non-linear lambda calculus.
+This approach ensures any embedded classical program executes with its standard semantics, making the language's classical fragment indistinguishable from the original lambda calculus.
+A key consequence of enforcing this conservative property is that the quantum features of the language are cleanly isolated from the classical host.
+This quantum-native fragment, consisting of encapsulated unitary operations, forms a distinct module for expressing quantum control.
+This separation provides a natural framework that enables coexistence of the historically separate paradigms of '\textit{Quantum Data, Classical Control}' and '\textit{Quantum Data, Quantum Control}'.
+That means a programmer can compose the main logic in a higher-order classical style, while delegating complex quantum subroutines to specialized, domain-specific modules.
+The resulting language provides a familiar framework for classical programmers and, at the same time, introduces a structured and powerful abstraction for high-level quantum-classical programming.

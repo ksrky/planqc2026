@@ -1,0 +1,86 @@
+\section{Operational semantics}
+\subsection{Full definitions of operational semantics} \label{sec:opsem-full}
+The remaining part of the single-step reduction relation (Definition~\ref{def:single-step}) is the classical $\beta$-reduction rules, given in Fig.~\ref{fig:reduction-beta}.
+These rules are standard for call-by-value lambda calculus, and do not interact with the quantum store.
+$V^*$ in the rules denotes a value with locations.
+\begin{figure}[ht]
+  \begin{mathpar}
+    \inferrule*[right=$\beta$-Lam]
+    {}
+    {[\sigma,(\lambda x. M^*)\ V^*] \longrightarrow [\sigma,M^*[V^*/x]]}
+    \and
+    \inferrule*[right=$\beta$-Pair]
+    {}
+    {[\sigma,\texttt{let}\ \langle x,y\rangle=\langle V^*,W^*\rangle\ \texttt{in}\ M^*] \longrightarrow [\sigma,M^*[V^*/x,W^*/y]]}
+    \and
+    \inferrule*[right=$\beta$-Inj$_0$]
+    {}
+    {[\sigma,\texttt{match}\ \texttt{inj}_0\ V^*\ [x\Rightarrow M^*\mid y\Rightarrow N^*]] \longrightarrow [\sigma,M^*[V^*/x]]}
+    \and
+    \inferrule*[right=$\beta$-Inj$_1$]
+    {}
+    {[\sigma,\texttt{match}\ \texttt{inj}_1\ V^*\ [x\Rightarrow M^*\mid y\Rightarrow N^*]] \longrightarrow [\sigma,N^*[V^*/y]]}
+  \end{mathpar}
+  \caption{Classical reduction rules}
+  \label{fig:reduction-beta}
+  \Description{A set of inference rules defining basic beta reduction in the operational semantics. The rules include beta reduction for lambda abstraction, product types, and sum types with two cases for injections. Each rule shows how a term in a specific form reduces to another term by substituting values for variables.}
+\end{figure}
+
+The relation $\longrightarrow$ is defined by the rules in Fig.~\ref{fig:reduction} and Fig.~\ref{fig:reduction-beta}, together with the congruence rule induced by the evaluation context.
+The evaluation contexts are defined as:
+\begin{equation*}
+  \begin{array}{rl}
+    E \Coloneqq & [\cdot]\mid E\ M\mid V\ E\mid\langle E, M\rangle\mid\langle V,E\rangle\mid\texttt{inj}_0\ E\mid\texttt{inj}_1\ E\mid \\
+                & \texttt{let}\ \langle x,y\rangle=E\ \texttt{in}\ M\mid\texttt{match}\ E\ [x\Rightarrow M\mid y\Rightarrow N ]
+  \end{array}
+\end{equation*}
+
+\subsection{Proof of norm preservation}
+\begin{lem}[Linearity of norm] \label{lem:norm-linear}
+  $\|\sum_i \alpha_i \psi_i\| = \sqrt{\sum_i |\alpha_i|^2 \|\psi_i\|^2}$ if $\langle \psi_i, \psi_j\rangle = 0$ for all $i\ne j$.
+\end{lem}
+
+\begin{lem} \label{lem:functor-norm}
+  For all injection $f:X\to Y$,
+  $\|\ell^2(f)(\psi)\| = \|\psi\|$ for any $\psi\in \ell^2(X)$.
+\end{lem}
+\begin{proof}
+  Let $g$ be a left inverse of $f$, then
+  \begin{equation}
+    \|\ell^2(f)(\psi)\| = \left\|\sum_{x\in X} \psi(x) \delta_{f(x)}\right\| = \sum_{y\in f(X)} |\psi(g(y))|^2 = \sum_{x\in X} |\psi(x)|^2 = \|\psi\|.
+  \end{equation}
+\end{proof}
+
+\begin{lem} \label{lem:isometry-norm}
+  For all isometry $f:\ell^2(X)\to\ell^2(Y)$, $\|f(\psi)\| = \|\psi\|$ for any $\psi\in \ell^2(X)$.
+\end{lem}
+\begin{proof}
+  For all $x, x'\in X$, $\langle f(\delta_x), f(\delta_{x'})\rangle = \langle \delta_x, \delta_{x'}\rangle = 0$ holds because $f$ is an isometry.
+  Then, by Lemma~\ref{lem:norm-linear},
+  \begin{equation*}
+    \|f(\psi)\| = \left\|\sum_{x\in X} \psi(x)f(\psi)\right\| = \sqrt{\sum_{x\in X} |\psi(x)|^2\|f(\delta_x)\|^2}.
+  \end{equation*}
+  As $\|f(\delta_x)\| = \sqrt{\langle f(\delta_x), f(\delta_x)\rangle} = \|\delta_x\| = 1$, we have $\|f(\psi)\| = \sqrt{\sum_{x\in X} |\psi(x)|^2} = \|\psi\|$.
+\end{proof}
+
+\NormpresTheorem*
+\begin{proof}
+  By induction on the derivation of $[\sigma,M] \longrightarrow \mu$.
+  We only show the cases for the quantum rules; the other cases are immediate.
+  \begin{itemize}
+    \item Case \textsc{Q-Destr}: Since the function $f$ adds new entries $l_2$ and $l_3$ to $\rho$, it is injective; hence by Lemma~\ref{lem:functor-norm}, $\|\ell^2(f)(\sigma)\| = \|\sigma\|$.
+    \item Case \textsc{Q-Prep}: The same reasoning as in Case \textsc{Q-Destr}.
+    \item Case \textsc{Q-Meas}: Similar argument to the Case \textsc{Q-Destr}, $f_0$ and $f_1$ are injective.
+          For each basis $\rho_i$ in $\sigma_i$ ($i=0,1$), $\rho_0 \ne \rho_1$ holds because they differ at least on the values stored in $l_1$; thus, $\langle \sigma_0, \sigma_1\rangle = 0$.
+          \begin{align*}
+            \|\alpha_0\sigma_0 +\alpha_1\sigma_1\|
+             & = \sqrt{|\alpha_0|^2 \|\sigma_0\|^2+|\alpha_1|^2 \|\sigma_1\|^2} \tag{by Lemma~\ref{lem:norm-linear}} \\
+             & = \sqrt{(|\alpha_0|^2 + |\alpha_1|^2) \|\sigma_0\|^2} \tag{$\|\sigma_0\| = \|\sigma_1\|$}             \\
+             & = \|\sigma_0\| \tag{$|\alpha_0|^2 + |\alpha_1|^2 = 1$}                                                \\
+             & = \|\ell^2(f_0)(\sigma_0)\| \tag{by Lemma \ref{lem:functor-norm}}
+          \end{align*}
+          Similarly, $\|\alpha_0\sigma_0 +\alpha_1\sigma_1\| = \|\ell^2(f_1)(\sigma_1)\|$.
+    \item Case \textsc{Q-Evolve}: As $(\llbracket\hat{U}\rrbracket_\mathcal{U})^\sharp$ is a unitary, $\|\llbracket\hat{U}\rrbracket_\mathcal{U}(\rho(l_1))\|^2 = 1$; hence, $\|f(\rho)\| = 1$ for any basis $\rho$ in $\sigma$.
+          By Lemma \ref{lem:isometry-norm}, $\|f^\sharp(\sigma)\| = \|\sigma\|$.
+  \end{itemize}
+\end{proof}

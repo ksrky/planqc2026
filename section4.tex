@@ -1,0 +1,19 @@
+\section{Conservativity}
+As mentioned in Section \ref{sec:intro}, the central design principle of our language is \textit{conservativity}; a formal guarantee that the quantum extension does not alter the original behavior of the classical fragment.
+Informally, this means that for any term, one may apply the classical reduction rules to the subterms that do not contain $\hat{U}$ without changing the overall behavior of the term.
+
+To formalize this, we first define contextual equivalence, which states that two terms are equivalent if their observable behaviors are identical in any context.
+A context $C[\cdot]$ is defined as a term with a single hole $[\cdot]$ in it.
+
+\begin{dfn}[Contextual equivalence]
+  For $M, N \in \Lambda$, define two relations $\approx$ and $\approx_\beta$ as follows:
+  \begin{itemize}
+    \item $M\approx N \Leftrightarrow_\mathrm{def} \forall C[\cdot]\in\Lambda(\mathcal{U}).\ C[M] \Downarrow \Leftrightarrow C[N] \Downarrow$.
+    \item $M\approx_\beta N \Leftrightarrow_\mathrm{def} \forall C[\cdot]\in\Lambda.\ C[M] \Downarrow_\beta \Leftrightarrow C[N] \Downarrow_\beta$, where $\Downarrow_\beta$ is defined similarly to $\Downarrow$ but using only the congruence rules and the classical rules presented in Appendix \ref{sec:opsem-full}.
+  \end{itemize}
+\end{dfn}
+
+Conservativity is then stated as the following theorem.
+\begin{restatable}[Conservativity]{thm}{ConservTheorem} \label{thm:conservativity}
+  For all $M, N \in \Lambda$, $M \approx_\beta N$ iff $M \approx N$.
+\end{restatable}

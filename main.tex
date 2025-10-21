@@ -1,0 +1,96 @@
+\documentclass[acmsmall, nonacm]{acmart}
+
+% supress font size warnings
+\usepackage{anyfontsize}
+\usepackage{fix-cm}
+
+\let\Bbbk\relax % avoid clash
+
+\usepackage{amsmath,amssymb,bm,amsfonts,amsthm,mathtools}
+\usepackage[only,llbracket,rrbracket,llparenthesis,rrparenthesis]{stmaryrd}
+\usepackage{physics}
+\usepackage{mathpartir}
+\usepackage{tikz-cd}
+\usepackage{qcircuit}
+\usepackage{thm-restate}
+
+\usetikzlibrary{positioning, arrows.meta, shapes.multipart, shadows, shapes.geometric, math}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{dfn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+
+\tikzset{
+  node distance=1cm and 1.5cm,
+  title/.style={
+      font=\bfseries\small
+    },
+  mem/.style={
+      rectangle,
+      draw,
+      thick,
+      fill=blue!10,
+      minimum height=1cm,
+      minimum width=1cm,
+      drop shadow
+    },
+  op/.style={
+      ellipse,
+      draw,
+      thick,
+      fill=green!10,
+      minimum height=0.6cm,
+      minimum width=0.9cm
+    },
+  arr/.style={
+      -Stealth,
+      thick
+    }
+}
+
+\title{A Non-linear Quantum Lambda Calculus}
+\author{Rikiya Kashiwagi}
+\author{Atsushi Igarashi}
+\affiliation{%
+  \institution{Kyoto University}
+  \department{Graduate School of Informatics}
+  \city{Kyoto}
+  \country{Japan}
+}
+\email{{kashiwagi,igarashi}@fos.kuis.kyoto-u.ac.jp}
+
+\begin{abstract}
+  This paper presents a quantum extension of lambda calculus without linearity, reinterpreting contraction and weakening as logical operations on references to quantum states, rather than on the states themselves.
+  The proposed calculus is a conservative extension of the normal lambda calculus, preserving its operational equivalence.
+  This provides a familiar yet powerful framework for hybrid quantum-classical programming.
+\end{abstract}
+
+%\keywords{quantum programming language, lambda calculus}
+
+\begin{document}
+\maketitle
+
+\input{section1}
+\input{section2}
+\input{section3.1}
+\input{section3.2}
+\input{section3.3}
+\input{section4}
+\input{section5}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\appendix
+\input{appendixA}
+\input{appendixB}
+\input{appendixC}
+
+\end{document}

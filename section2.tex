@@ -1,0 +1,53 @@
+
+\section{Main idea} \label{sec:main-idea}
+To build a quantum language on a non-linear foundation, a reinterpretation of the structural rules---contraction and weakening---is essential.
+In conventional linear type systems, contraction is viewed as data duplication and weakening as data deletion.
+This interpretation conflicts with the No-Cloning and No-Deleting theorems when the data is a quantum state.
+
+Our approach reinterprets these rules using \textit{reference-based semantics}.
+Contraction is not the physical copying of a quantum state, but merely the duplication of a reference to it.
+Similarly, weakening is simply the act of dropping a reference.
+As these are purely logical operations on references, they do not violate any physical laws.
+The physical instantiation of a quantum state occurs only when a unitary operator is applied to one of its duplicated references.
+Specifically, if the state is expressed as $\sum_i\alpha_i\ket{i}$, where $\{\ket{i}\}$ is a basis set, and a unitary $U$ is applied, the operation transforms the state into the entangled state $\sum_i\alpha_i\ket{i}(U\ket{i})$.
+This is similar to the '\textit{Contraction as sharing}' concept like in \cite{ALTENKIRCH2005_FunctionalQuantumProgramming,ARRIGHI2004_OperationalSemanticsFormal}, but it occurs not at the contraction step, but right before the application of a unitary.
+
+This design has profound consequences for the language's equational theory.
+Consider a copy function $\delta \equiv \lambda x.\langle x,x\rangle$ and a projection $\pi_1 \equiv \lambda\langle x,y\rangle.x$. In our system, the identity $\pi_1\circ\delta=\lambda x. x$ holds.
+This is because weakening (via $\pi_1$) is a logical dereference, not a physical act.
+In contrast, this identity fails in languages like QML\cite{ALTENKIRCH2005_FunctionalQuantumProgramming} or Qunity\cite{VOICHICK2023_QunityUnifiedLanguage}, where weakening is interpreted as a partial trace.
+In those systems, the composition $\pi_1\circ\delta$ induces decoherence, mapping a pure state to a mixed one.
+
+However, this equational property is carefully constrained.
+If we define a copy function with inserting an identity unitary, $\delta_I \equiv \lambda x.\langle I\ x,x\rangle$, then $\pi_1\circ\delta_I\ne\lambda x.x$.
+The application of the unitary $I$ makes $I\ x$ a distinct physical instance from $x$; for example, the input state $\alpha\ket{0}+\beta\ket{1}$ becomes the entangled state $\alpha\ket{00}+\beta\ket{11}$.
+The evaluation procedure for this case is illustrated in Fig.~\ref{fig:grids}.
+This behavior does not violate the conservative extension property of our language.
+Unitary operators like $I$ are separated from the classical fragment.
+The conservative property applies only to the common language, and equational laws are not expected to hold for terms containing unitaries.
+
+\begin{figure}[t]
+  \centering
+  \begin{minipage}{0.2\textwidth}
+    \centering
+    \input{tikz/grid01.tikz}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.2\textwidth}
+    \centering
+    \input{tikz/grid02.tikz}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.25\textwidth}
+    \centering
+    \input{tikz/grid03.tikz}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.25\textwidth}
+    \centering
+    \input{tikz/grid04.tikz}
+  \end{minipage}
+  \caption{Illustration of the internal states when $\pi_1\circ\delta_I$ is applied to a qubit. The grids correspond to quantum states. The rows represent composite systems, and the columns represent superposition with the scalers on the left. From left to right: (1) $l_1$ refers to some qubit state. (2) Contraction duplicates a reference, not a state. (3) Applying an identity unitary to one of the duplicated references creates a distinct physical instance . (4) Weakening drops a reference.}
+  \Description{Four grid diagrams showing the step-by-step process of applying $\pi_1\circ\delta_I$ to a qubit. Each grid shows quantum states with rows representing composite systems and columns showing superposition states with scalar coefficients. The sequence demonstrates: initial qubit reference, reference duplication through contraction, identity unitary application creating distinct physical instances, and final reference dropping through weakening.}
+  \label{fig:grids}
+\end{figure}
