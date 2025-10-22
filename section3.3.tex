@@ -18,7 +18,7 @@ Values and basis values are given by the following syntax.
     \text{Basis values} & \hat{V}, \hat{W} \Coloneqq & *\mid\langle\hat{V}, \hat{W}\rangle\mid\texttt{inj}_0\ \hat{V}\mid\texttt{inj}_1\ \hat{V}
   \end{array}
 \end{equation*}
-The set of all values is denoted by $\mathcal{V}$ and the set of all basis values by $\mathcal{V}_0$, which is a subset of $\mathcal{V}$.
+The set of all basis values is denoted by $\mathcal{V}_0$.
 
 A configuration $[\sigma, \dot{M}]$ represents the state of a computation.
 The quantum store $\sigma$ is a vector in a free Hilbert space over value stores (finite maps from locations $\mathcal{L}$ to basis values $\mathcal{V}_0$), while $\dot{M}$ is the runtime term containing references to $\sigma$.
@@ -29,15 +29,15 @@ The key rules in Fig.~\ref{fig:reduction} directly correspond to the four postul
 %For each rule, the extension of quantum stores lifts a function $f$ over a value store $\rho$ to a function over $\sigma$ using $\ell^2(f)$ and $f^\sharp$ extension described in Section~\ref{sec:math-prelim}.
 \begin{description}
   \item[State preparation (\textsc{Q-Prep})] It prepares a quantum state by taking a classical basis value $\hat{V}$ and placing it into the store at a new location $l$.
-  \item[Unitary Evolution (\textsc{Q-Evolve})] Applying a unitary $\hat{U}$ to a reference $l_1$ transforms the entire quantum store $\sigma$ according to the operator's definition.
+  \item[Unitary Evolution (\textsc{Q-Evolve})] Applying a unitary $\hat{U}$ to a reference $l_1$ transforms the entire quantum store $\sigma$ according to the operator's interpretation.
         The location $l_1$ stays in the store, which reflects the 'Contraction as sharing' mechanism as illustrated in Fig.~\ref{fig:grids}.
   \item[Measurement (\textsc{Q-Meas})] The match expression performs a measurement on a referenced state, causing the computation to branch probabilistically and collapsing the quantum store.
   \item[Composite system (\textsc{Q-Destr})] It destructs a pair stored at $l_1$ and creates new, distinct references $l_2$, $l_3$ to its components.
-        It copies values on each value store, not meaning that the quantum store is cloned.
+        It copies values at each value store, not meaning that the superpositions themselves are cloned.
 \end{description}
 
 This semantics imposes a meta-level constraint on $\hat{U}$.
-Specifically, the \textit{interpretation} $\llbracket\hat{U}\rrbracket_\mathcal{U} : \mathcal{V}_0\rightharpoonup \ell^2(\mathcal{V}_0)$ must be a unitary operator; that is; if $U = \llbracket\hat{U}\rrbracket_\mathcal{U}$, then $(U|_{\mathrm{dom}(U)})^\sharp$ is unitary.
+Specifically, the \textit{interpretation} $\llbracket\hat{U}\rrbracket_\mathcal{U} : \mathcal{V}_0\rightharpoonup \ell^2(\mathcal{V}_0)$ must satisfy the following condition: if $U = \llbracket\hat{U}\rrbracket_\mathcal{U}$, then $(U|_{\mathrm{dom}(U)})^\sharp$ is unitary.
 \begin{dfn}[Small-step reduction] \label{def:single-step}
   Given a set of partial functions $\llbracket\hat{U}\rrbracket_\mathcal{U}$ for $\hat{U}\in\mathcal{U}$, the reduction relation $\longrightarrow \subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation closed under the classical rules (Appendix~\ref{sec:opsem-full}) and the quantum rules (Fig.~\ref{fig:reduction}).
   The relation is then extended to all evaluation contexts $E$ via the standard congruence rule: if $[\sigma,M] \longrightarrow \mu$, then $[\sigma,E[M]] \longrightarrow \sum_{[\sigma',M']\in\mathrm{supp}(\mu)}\mu([\sigma',M'])\delta_{[\sigma',E[M']]}$.
@@ -74,15 +74,20 @@ A key property to the physical realizability of the semantics is norm preservati
   If $[\sigma,M] \longrightarrow \mu$, then for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $||\sigma'|| = ||\sigma||$.
 \end{restatable}
 
-Since a single reduction step can yield a distribution of configurations, the \textit{multi-step reduction} ($\longrightarrow$) is not a simple reflexive and transitive closure. Instead, it is defined inductively to compose these probabilistic outcomes, akin to a monadic bind.
+Since a single reduction step can yield a distribution of configurations, the \textit{multi-step reduction} ($\longrightarrow^*$) is not a simple reflexive and transitive closure. Instead, it is defined inductively to compose these probabilistic outcomes, akin to a monadic bind.
 \begin{dfn}[Multi-step reduction]
-  The multi-step reduction relation $\longrightarrow\subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation satisfying:
+  The multi-step reduction relation $\longrightarrow^*\subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation satisfying:
   \begin{itemize}
-    \item $[\sigma,M] \longrightarrow\delta_{[\sigma,M]}$ for all $[\sigma,M]\in\mathcal{C}$.
-    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow\nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow\sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
+    \item $[\sigma,M] \longrightarrow^*\delta_{[\sigma,M]}$ for all $[\sigma,M]\in\mathcal{C}$.
+    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow^*\nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow^*\sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
   \end{itemize}
 \end{dfn}
 
 \begin{dfn}[Termination]
   A surface term $M$ is said to \emph{terminate} if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow\mu$, and for every $[\sigma, V] \in \mathrm{supp}(\mu)$, $V$ is a value; we denote this by $M \Downarrow$.
 \end{dfn}
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "main"
+%%% End:

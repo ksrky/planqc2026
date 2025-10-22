@@ -1,4 +1,4 @@
-\section{Proof of conservativity}
+\section{Proof of conservativity} \label{sec:conserv-proof}
 \begin{lem} \label{lem:classical-step}
   For any $M \in \Lambda$, if $M \longrightarrow M'$, then $M \longrightarrow_\beta M'$ and $M' \in \Lambda$.
 \end{lem}
@@ -21,16 +21,28 @@
 \ConservTheorem*
 \begin{proof}[Proof]
   (\textbf{Sufficiency})
-  \\
+  Assume $M\approx_\beta N$ and let $C[\cdot] \in \Lambda(\mathcal{U})$ be any context.
+  We prove if $C[M] \Downarrow$, then $C[N] \Downarrow$ holds.
+  The converse direction is ommitted since it can be shown in the same way.
+  We prove by induction on the derivation of the multi-step reduction relation.
+  \begin{itemize}
+    \item If $C[M] \Downarrow$ is $[\delta_\emptyset, C[M]] \longrightarrow^* \delta_{[\delta_\emptyset,V]}$ for some $V$, then $C$ is a hole and $M = V$.
+          By the assumption $M \approx_\beta N$, $N$ is also $V$; thus, $C[N] \Downarrow$ holds.
+    \item If the first reduction step of $C[M] \Downarrow$ is $[\delta_\emptyset, C[M]] \longrightarrow \mu$, then we do case analaysis on the rule applied in this step.
+          %\begin{itemize}
+          %  \item Case $\beta$-\textsc{Lam}: If $C[M]$ is $C'[M]\ \dot{V}$, then by the induction hypothesis, $C'[N]$ also terminates.
+          %        If $C[M]$ is $(\lambda x.\dot{M}')\ \dot{V}$, then $C$ is a hole and $M = \dot{V}$.
+          %\end{itemize}
+  \end{itemize}
   (\textbf{Necessity})
-  Proof by contradiction.
+  Proof by contrapositive.
   We assume $M \not\approx_{\beta} N$ for $M, N \in \Lambda$, and show that this implies $M \not\approx N$.
   The assumption $M \not\approx_{\beta} N$ means there exists a classical context $C[\cdot] \in \Lambda$ that distinguishes $M$ and $N$ in the classical fragment.
   Without loss of generality, let's assume $C[M] \Downarrow_\beta$ while $C[N] \Downarrow_\beta$ does not hold.
 
   Since $C[M] \Downarrow_\beta$, Lemma~\ref{lem:classical-eval} implies that $C[M] \Downarrow$.
-  Since the evaluation of $C[N]$ under the classical rules diverges, the lemma implies that the evaluation of $C[N]$ in the full semantics must also diverge.
+  Since the evaluation of $C[N]$ under the classical rules diverges, the lemma implies that the evaluation of $C[N]$ in the full semantics also diverge.
 
-  Thus, the very same classical context $C[\cdot] \in \Lambda$ (which is also a valid context in $\Lambda(\mathcal{U})$) serves to distinguish $M$ and $N$ in the full quantum semantics.
+  Thus, the very same classical context $C[\cdot] \in \Lambda$, which is also a valid context in $\Lambda(\mathcal{U})$, serves to distinguish $M$ and $N$ in the full semantics.
   This establishes that $M \not\approx N$, completing the proof of the contrapositive.
 \end{proof}

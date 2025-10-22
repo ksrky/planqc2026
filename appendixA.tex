@@ -2,7 +2,7 @@
 \subsection{Full definitions of operational semantics} \label{sec:opsem-full}
 The remaining part of the single-step reduction relation (Definition~\ref{def:single-step}) is the classical $\beta$-reduction rules, given in Fig.~\ref{fig:reduction-beta}.
 These rules are standard for call-by-value lambda calculus, and do not interact with the quantum store.
-$\dot{V}$ in the rules denotes a value with locations.
+$\dot{V}$ and $\dot{W}$ in the rules denote values with locations.
 \begin{figure}[ht]
   \begin{mathpar}
     \inferrule*[right=$\beta$-Lam]
@@ -41,8 +41,7 @@ The evaluation contexts are defined as:
 \end{lem}
 
 \begin{lem} \label{lem:functor-norm}
-  For all injection $f:X\to Y$,
-  $\|\ell^2(f)(\psi)\| = \|\psi\|$ for any $\psi\in \ell^2(X)$.
+  For all injection $f:X\to Y$ and $\psi\in \ell^2(X)$, $\|\ell^2(f)(\psi)\| = \|\psi\|$.
 \end{lem}
 \begin{proof}
   Let $g$ be a left inverse of $f$, then
@@ -52,7 +51,7 @@ The evaluation contexts are defined as:
 \end{proof}
 
 \begin{lem} \label{lem:isometry-norm}
-  For all isometry $f:\ell^2(X)\to\ell^2(Y)$, $\|f(\psi)\| = \|\psi\|$ for any $\psi\in \ell^2(X)$.
+  For all isometry $f:\ell^2(X)\to\ell^2(Y)$ and $\psi\in \ell^2(X)$, $\|f(\psi)\| = \|\psi\|$.
 \end{lem}
 \begin{proof}
   For all $x, x'\in X$, $\langle f(\delta_x), f(\delta_{x'})\rangle = \langle \delta_x, \delta_{x'}\rangle = 0$ holds because $f$ is an isometry.
@@ -81,6 +80,12 @@ The evaluation contexts are defined as:
           \end{align*}
           Similarly, $\|\alpha_0\sigma_0 +\alpha_1\sigma_1\| = \|\ell^2(f_1)(\sigma_1)\|$.
     \item Case \textsc{Q-Evolve}: As $(\llbracket\hat{U}\rrbracket_\mathcal{U})^\sharp$ is a unitary, $\|\llbracket\hat{U}\rrbracket_\mathcal{U}(\rho(l_1))\|^2 = 1$; hence, $\|f(\rho)\| = 1$ for any basis $\rho$ in $\sigma$.
-          By Lemma \ref{lem:isometry-norm}, $\|f^\sharp(\sigma)\| = \|\sigma\|$.
+          % Proof of isometry
+          For all basis $\rho, \rho'$ in $\sigma$,
+          \begin{equation*}
+            \langle f(\rho), f(\rho')\rangle = \sum_{\hat{V}}\overline{\llbracket\hat{U}\rrbracket_\mathcal{U}(\rho(l_1))(\hat{V})}\llbracket\hat{U}\rrbracket_\mathcal{U}(\rho'(l_1))(\hat{V}) = \langle \delta_\rho, \delta_{\rho'}\rangle.
+          \end{equation*}
+          As $f^\sharp(\delta_\rho) = f(\rho)$ by definition, $\langle f^\sharp(\delta_\rho), f^\sharp(\delta_{\rho'})\rangle = \langle \delta_\rho, \delta_{\rho'}\rangle$ holds, which means $f^\sharp$ is an isometry.
+          Thus, by Lemma~\ref{lem:isometry-norm}, $\|f(\sigma)\| = \|\sigma\|$.
   \end{itemize}
 \end{proof}
