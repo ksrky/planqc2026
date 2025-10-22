@@ -13,7 +13,12 @@ $\otimes$ and $\oplus$ indicate that they are tensor product and direct sum of H
 Crucially, there is no distinction between classical and quantum types in this system.
 For instance, the type of both classical bit and qubit are represented as the same $\top \oplus \top$.
 
-To define typing judgements, we need store typing.
+Typing judgements are defined on the runtime terms, which means they include typing rules for store locations.
+In order to map locations to their types, we introduce the notion of store typing.
+\begin{dfn}[Store typing]
+  A store typing $\Sigma$ is a finite mapping from locations to basis types.
+  A store $\sigma$ is well-typed under $\Sigma$, denoted $\vdash \sigma : \Sigma$, if for every $l\in\text{dom}(\Sigma)$, $\vdash \sigma(l) : \Sigma(l)$ holds.
+\end{dfn}
 
 Similar to the definition of the reduction relation, we assume a typing judgement for $\hat{U}\in\mathcal{U}$ in the form of $\vdash_\mathcal{U} \hat{U} : \hat{A} \rightarrow \hat{B}$.
 \begin{dfn}[Typing judgments]

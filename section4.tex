@@ -5,7 +5,7 @@ Informally, this means that for any term, one may apply the classical reduction 
 To formalize this, we first define contextual equivalence, which states that two terms are equivalent if their observable behaviors are identical in any context.
 A context $C[\cdot]$ is defined as a term with a single hole $[\cdot]$ in it.
 
-\begin{dfn}[Contextual equivalence]
+\begin{dfn}[Contextual equivalence] \label{def:contextual-equiv}
   For $M, N \in \Lambda$, define two relations $\approx$ and $\approx_\beta$ as follows:
   \begin{itemize}
     \item $M\approx N \Leftrightarrow_\mathrm{def} \forall C[\cdot]\in\Lambda(\mathcal{U}).\ C[M] \Downarrow \Leftrightarrow C[N] \Downarrow$.
