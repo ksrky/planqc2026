@@ -7,7 +7,7 @@ Because a term is rewritten to contain these locations during execution, we must
 
 \begin{dfn}[The runtime language $\Lambda_\mathcal{L}(\mathcal{U})$]
   Given a finite set of store locations $\mathcal{L}$, the runtime language is defined as $\Lambda_\mathcal{L}(\mathcal{U}) := \Lambda(\mathcal{U})\cup\mathcal{L}$.
-  We use $M^*, N^*, P^*$ to denote runtime terms.
+  We use $\dot{M}, \dot{N}, \dot{P}$ to denote runtime terms.
 \end{dfn}
 
 Only first-order, or \textit{basis values}, can be placed in the store and exist in a superposition.
@@ -20,8 +20,8 @@ Values and basis values are given by the following syntax.
 \end{equation*}
 The set of all values is denoted by $\mathcal{V}$ and the set of all basis values by $\mathcal{V}_0$, which is a subset of $\mathcal{V}$.
 
-A configuration $[\sigma, M^*]$ represents the state of a computation.
-The quantum store $\sigma$ is a vector in a free Hilbert space over value stores (finite maps from locations $\mathcal{L}$ to basis values $\mathcal{V}_0$), while $M^*$ is the runtime term containing references to $\sigma$.
+A configuration $[\sigma, \dot{M}]$ represents the state of a computation.
+The quantum store $\sigma$ is a vector in a free Hilbert space over value stores (finite maps from locations $\mathcal{L}$ to basis values $\mathcal{V}_0$), while $\dot{M}$ is the runtime term containing references to $\sigma$.
 The set of all configurations is denoted by $\mathcal{C}$.
 
 The operational semantics are defined by a call-by-value, small-step reduction relation ($\longrightarrow$).
@@ -49,12 +49,12 @@ Specifically, the \textit{interpretation} $\llbracket\hat{U}\rrbracket_\mathcal{
   \begin{mathpar}
     \inferrule*[right=Q-Destr]
     {f(\rho) = \rho\cup\{(l_2,\hat{V}),(l_3, \hat{W})\}\text{ where } \rho(l_1) = \langle \hat{V}, \hat{W}\rangle \\ l_2, l_3 \notin \mathrm{dom}(\sigma)}
-    {[\sigma, \texttt{let}\ \langle x, y\rangle=l_1\ \texttt{in}\ M^*] \longrightarrow \delta_{[\ell^2(f)(\sigma), M^*[l_2/x,l_3/y]]}}
+    {[\sigma, \texttt{let}\ \langle x, y\rangle=l_1\ \texttt{in}\ \dot{M}] \longrightarrow \delta_{[\ell^2(f)(\sigma), \dot{M}[l_2/x,l_3/y]]}}
     \and
     \inferrule*[right=Q-Meas]
     {|\alpha_0|^2 + |\alpha_1|^2 = 1 \\ ||\sigma_0|| = ||\sigma_1|| \\ f_0(\rho) = \rho\cup\{(l_2,\hat{V})\}\text{ where } \rho(l_1) = \texttt{inj}_0\ \hat{V} \\ f_1(\rho) = \rho\cup\{(l_3,\hat{W})\}\text{ where } \rho(l_1) = \texttt{inj}_1\ \hat{W} \\ l_2 \notin \mathrm{dom}(\sigma_0) \\ l_3 \notin \mathrm{dom}(\sigma_1)}
-    {[\alpha_0\sigma_0 + \alpha_1\sigma_1, \texttt{match}\ l_1\ [y\Rightarrow M^*\mid z\Rightarrow N^*]] \\
-    \longrightarrow |\alpha_0|^2 \delta_{[\ell^2(f_0)(\sigma_0), M^*[l_2/y]]} + |\alpha_1|^2\delta_{[\ell^2(f_1)(\sigma_1),N^*[l_3/z]]}}
+    {[\alpha_0\sigma_0 + \alpha_1\sigma_1, \texttt{match}\ l_1\ [y\Rightarrow \dot{M}\mid z\Rightarrow \dot{N}]] \\
+    \longrightarrow |\alpha_0|^2 \delta_{[\ell^2(f_0)(\sigma_0), \dot{M}[l_2/y]]} + |\alpha_1|^2\delta_{[\ell^2(f_1)(\sigma_1),\dot{N}[l_3/z]]}}
     \and
     \inferrule*[right=Q-Prep]
     {f(\rho) = \rho\cup\{(l, \hat{V})\} \\ l \notin \mathrm{dom}(\sigma)}
@@ -74,15 +74,15 @@ A key property to the physical realizability of the semantics is norm preservati
   If $[\sigma,M] \longrightarrow \mu$, then for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $||\sigma'|| = ||\sigma||$.
 \end{restatable}
 
-Since a single reduction step can yield a distribution of configurations, the \textit{multi-step reduction} ($\longrightarrow^*$) is not a simple reflexive and transitive closure. Instead, it is defined inductively to compose these probabilistic outcomes, akin to a monadic bind.
+Since a single reduction step can yield a distribution of configurations, the \textit{multi-step reduction} ($\longrightarrow$) is not a simple reflexive and transitive closure. Instead, it is defined inductively to compose these probabilistic outcomes, akin to a monadic bind.
 \begin{dfn}[Multi-step reduction]
-  The multi-step reduction relation $\longrightarrow^* \subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation satisfying:
+  The multi-step reduction relation $\longrightarrow\subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation satisfying:
   \begin{itemize}
-    \item $[\sigma,M] \longrightarrow^* \delta_{[\sigma,M]}$ for all $[\sigma,M]\in\mathcal{C}$.
-    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow^* \nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow^* \sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
+    \item $[\sigma,M] \longrightarrow\delta_{[\sigma,M]}$ for all $[\sigma,M]\in\mathcal{C}$.
+    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow\nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow\sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
   \end{itemize}
 \end{dfn}
 
 \begin{dfn}[Termination]
-  A surface term $M$ is said to \emph{terminate} if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow^* \mu$, and for every $[\sigma, V] \in \mathrm{supp}(\mu)$, $V$ is a value; we denote this by $M \Downarrow$.
+  A surface term $M$ is said to \emph{terminate} if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow\mu$, and for every $[\sigma, V] \in \mathrm{supp}(\mu)$, $V$ is a value; we denote this by $M \Downarrow$.
 \end{dfn}

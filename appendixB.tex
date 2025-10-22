@@ -1,8 +1,21 @@
 \section{Proof of conservativity}
+\begin{lem} \label{lem:classical-step}
+  For any $M \in \Lambda$, if $M \longrightarrow M'$, then $M \longrightarrow_\beta M'$ and $M' \in \Lambda$.
+\end{lem}
+\begin{proof}
+  By induction on the derivation of $M \longrightarrow M'$.
+\end{proof}
+
 \begin{lem} \label{lem:classical-eval}
   For any $M \in \Lambda$, $M \Downarrow$ iff $M \Downarrow_\beta$.
 \end{lem}
 \begin{proof}
+  (\textbf{Sufficiency})
+  As the classical reduction relation $\longrightarrow_\beta$ is a subset of the full reduction relation $\longrightarrow$, also $\longrightarrow_\beta^* \subseteq \longrightarrow^*$ holds.
+
+  (\textbf{Necessity})
+  By Lemma \ref{lem:classical-step}, every step in the reduction sequence from $M$ to a value $V$ under $\longrightarrow$ corresponds to a step under $\longrightarrow_\beta$.
+  Thus, if $M \Downarrow$, there exists a sequence of reductions under $\longrightarrow_\beta$ from $M$ to $V$, establishing $M \Downarrow_\beta$.
 \end{proof}
 
 \ConservTheorem*
