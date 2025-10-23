@@ -7,27 +7,27 @@ Because a term is rewritten to contain these locations during execution, we must
 
 \begin{dfn}[The runtime language $\Lambda_\mathcal{L}(\mathcal{U})$]
   Given a finite set of store locations $\mathcal{L}$, the runtime language is defined as $\Lambda_\mathcal{L}(\mathcal{U}) := \Lambda(\mathcal{U}\cup\mathcal{L})$.
-  We use $\dot{M}, \dot{N}, \dot{P}$ to denote runtime terms.
+  To simplify notation, $M, N, P$ will also range over runtime terms.
+  We will explicitly refer to surface terms when the distinction is significant.
 \end{dfn}
 
 Only first-order, or \textit{basis values}, can be placed in the store and exist in a superposition.
 Values and basis values are given by the following syntax.
 \begin{equation*}
   \begin{array}{lrl}
-    \text{Values}       & V, W \Coloneqq             & *\mid\lambda x. M\mid\langle V, W\rangle\mid\texttt{inj}_0\ V\mid\texttt{inj}_1\ V\mid\hat{U} \\
+    \text{Values}       & V, W \Coloneqq             & l \mid *\mid\lambda x. M\mid\langle V, W\rangle\mid\texttt{inj}_0\ V\mid\texttt{inj}_1\ V\mid\hat{U} \\
     \text{Basis values} & \hat{V}, \hat{W} \Coloneqq & *\mid\langle\hat{V}, \hat{W}\rangle\mid\texttt{inj}_0\ \hat{V}\mid\texttt{inj}_1\ \hat{V}
   \end{array}
 \end{equation*}
 The set of all basis values is denoted by $\mathcal{V}_0$.
 
-A configuration $[\sigma, \dot{M}]$ represents the state of a computation.
-The quantum store $\sigma$ is a vector in a free Hilbert space over value stores (finite maps from locations $\mathcal{L}$ to basis values $\mathcal{V}_0$), while $\dot{M}$ is the runtime term containing references to $\sigma$.
+A configuration $[\sigma, M]$ represents the state of a computation.
+The quantum store $\sigma$ is a vector in a free Hilbert space over value stores (finite maps from locations $\mathcal{L}$ to basis values $\mathcal{V}_0$), while $M$ is the runtime term containing references to $\sigma$.
 Each value store in the support of $\sigma$ must have the same domain; we can define $\text{dom}(\sigma)$ without ambiguity.
 Write $\mathcal{C}$ for the set of all configurations.
 
 The operational semantics are defined by a call-by-value, small-step reduction relation ($\longrightarrow$).
 The key rules in Fig.~\ref{fig:reduction} directly correspond to the four postulates of quantum mechanics\cite{NIELSEN2010_QuantumComputationQuantum}.
-%For each rule, the extension of quantum stores lifts a function $f$ over a value store $\rho$ to a function over $\sigma$ using $\ell^2(f)$ and $f^\sharp$ extension described in Section~\ref{sec:math-prelim}.
 \begin{description}
   \item[State preparation (\textsc{Q-Prep})] It prepares a quantum state by taking a classical basis value $\hat{V}$ and placing it into the store at a new location $l$.
   \item[Unitary Evolution (\textsc{Q-Evolve})] Applying a unitary $\hat{U}$ to a reference $l_1$ transforms the entire quantum store $\sigma$ according to the operator's interpretation.
@@ -50,12 +50,12 @@ Specifically, the \textit{interpretation} $\llbracket\hat{U}\rrbracket_\mathcal{
   \begin{mathpar}
     \inferrule*[right=Q-Destr]
     {f(\rho) = \rho\cup\{(l_2,\hat{V}),(l_3, \hat{W})\}\text{ where } \rho(l_1) = \langle \hat{V}, \hat{W}\rangle \\ l_2, l_3 \notin \mathrm{dom}(\sigma)}
-    {[\sigma, \texttt{let}\ \langle x, y\rangle=l_1\ \texttt{in}\ \dot{M}] \longrightarrow \delta_{[\ell^2(f)(\sigma), \dot{M}[l_2/x,l_3/y]]}}
+    {[\sigma, \texttt{let}\ \langle x, y\rangle=l_1\ \texttt{in}\ M] \longrightarrow \delta_{[\ell^2(f)(\sigma), M[l_2/x,l_3/y]]}}
     \and
     \inferrule*[right=Q-Meas]
     {|\alpha_0|^2 + |\alpha_1|^2 = 1 \\ ||\sigma_0|| = ||\sigma_1|| \\ f_0(\rho) = \rho\cup\{(l_2,\hat{V})\}\text{ where } \rho(l_1) = \texttt{inj}_0\ \hat{V} \\ f_1(\rho) = \rho\cup\{(l_3,\hat{W})\}\text{ where } \rho(l_1) = \texttt{inj}_1\ \hat{W} \\ l_2 \notin \mathrm{dom}(\sigma_0) \\ l_3 \notin \mathrm{dom}(\sigma_1)}
-    {[\alpha_0\sigma_0 + \alpha_1\sigma_1, \texttt{match}\ l_1\ [y\Rightarrow \dot{M}\mid z\Rightarrow \dot{N}]] \\
-    \longrightarrow |\alpha_0|^2 \delta_{[\ell^2(f_0)(\sigma_0), \dot{M}[l_2/y]]} + |\alpha_1|^2\delta_{[\ell^2(f_1)(\sigma_1),\dot{N}[l_3/z]]}}
+    {[\alpha_0\sigma_0 + \alpha_1\sigma_1, \texttt{match}\ l_1\ [y\Rightarrow M\mid z\Rightarrow N]] \\
+    \longrightarrow |\alpha_0|^2 \delta_{[\ell^2(f_0)(\sigma_0), M[l_2/y]]} + |\alpha_1|^2\delta_{[\ell^2(f_1)(\sigma_1),N[l_3/z]]}}
     \and
     \inferrule*[right=Q-Prep]
     {f(\rho) = \rho\cup\{(l, \hat{V})\} \\\\ l \notin \mathrm{dom}(\sigma)}

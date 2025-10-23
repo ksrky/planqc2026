@@ -23,7 +23,7 @@ In order to map locations to their types, we introduce the notion of store typin
 Similar to the definition of the reduction relation, we assume a typing judgement for $\hat{U}\in\mathcal{U}$ in the form of $\vdash_\mathcal{U} \hat{U} : \hat{A} \rightarrow \hat{B}$.
 \begin{dfn}[Typing judgments]
   Given a set of external typing judgements $\vdash_\mathcal{U} \hat{U} : \hat{A} \rightarrow \hat{B}$ for $\hat{U}\in\mathcal{U}$,
-  A typing judgment is of the form $\Sigma \mid \Gamma \vdash \dot{M} : A$.
+  A typing judgment is of the form $\Sigma \mid \Gamma \vdash M : A$.
   The typing rules are given in Fig.~\ref{fig:typing}.
 \end{dfn}
 
@@ -46,41 +46,41 @@ Similar to the definition of the reduction relation, we assume a typing judgemen
     { \Sigma\mid\Gamma,y : B \vdash x : A }
     \and
     \inferrule*[right=$\rightarrow$-I]
-    { \Sigma\mid\Gamma, x : A \vdash \dot{M} : B }
-    { \Sigma\mid\Gamma \vdash \lambda x.\dot{M} : A\rightarrow B }
+    { \Sigma\mid\Gamma, x : A \vdash M : B }
+    { \Sigma\mid\Gamma \vdash \lambda x.M : A\rightarrow B }
     \and
     \inferrule*[right=$\rightarrow$-E]
-    { \Sigma\mid\Gamma \vdash \dot{M} : A \rightarrow B \\
-      \Sigma\mid\Gamma \vdash \dot{N} : A }
-    { \Sigma\mid\Gamma \vdash \dot{M}\ \dot{N} : B }
+    { \Sigma\mid\Gamma \vdash M : A \rightarrow B \\
+      \Sigma\mid\Gamma \vdash N : A }
+    { \Sigma\mid\Gamma \vdash M\ N : B }
     \and
     \inferrule*[right=$\otimes$-I]
-    { \Sigma\mid\Gamma \vdash \dot{M} : A \\
-      \Sigma\mid\Gamma \vdash \dot{N} : B }
-    { \Sigma\mid\Gamma \vdash \langle \dot{M},\dot{N}\rangle : A\otimes B }
+    { \Sigma\mid\Gamma \vdash M : A \\
+      \Sigma\mid\Gamma \vdash N : B }
+    { \Sigma\mid\Gamma \vdash \langle M,N\rangle : A\otimes B }
     \and
     \inferrule*[right=$\oplus_0$-I]
-    { \Sigma\mid\Gamma \vdash \dot{M} : A }
-    { \Sigma\mid\Gamma \vdash \texttt{inj}_0\ \dot{M} : A\oplus B }
+    { \Sigma\mid\Gamma \vdash M : A }
+    { \Sigma\mid\Gamma \vdash \texttt{inj}_0\ M : A\oplus B }
     \and
     \inferrule*[right=$\oplus_1$-I]
-    { \Sigma\mid\Gamma \vdash \dot{M} : B }
-    { \Sigma\mid\Gamma \vdash \texttt{inj}_1\ \dot{M} : A\oplus B }
+    { \Sigma\mid\Gamma \vdash M : B }
+    { \Sigma\mid\Gamma \vdash \texttt{inj}_1\ M : A\oplus B }
     \and
     \inferrule*[right=Op]
     { \vdash_\mathcal{U} \hat{U} : \hat{A} \rightarrow \hat{B} }
     { \Sigma\mid\Gamma \vdash \hat{U} : \hat{A} \rightarrow \hat{B} }
     \and
     \inferrule*[right=$\otimes$-E]
-    { \Sigma\mid\Gamma \vdash \dot{M} : A\otimes B \\
-      \Sigma\mid\Gamma,x:A,y:B \vdash \dot{N} : C }
-    { \Sigma\mid\Gamma \vdash \texttt{let}\ \langle x,y\rangle=\dot{M}\ \texttt{in}\ \dot{N} : C }
+    { \Sigma\mid\Gamma \vdash M : A\otimes B \\
+      \Sigma\mid\Gamma,x:A,y:B \vdash N : C }
+    { \Sigma\mid\Gamma \vdash \texttt{let}\ \langle x,y\rangle=M\ \texttt{in}\ N : C }
     \and
     \inferrule*[right=$\oplus$-E]
-    { \Sigma\mid\Gamma \vdash \dot{M} : A \oplus B \\
-    \Sigma\mid\Gamma, x : A \vdash \dot{N} : C \\
-    \Sigma\mid\Gamma, y : B \vdash \dot{P} : C }
-    { \Sigma\mid\Gamma \vdash \texttt{match}\ \dot{M}\ [x\Rightarrow \dot{N}\mid y\Rightarrow \dot{P}] : C }
+    { \Sigma\mid\Gamma \vdash M : A \oplus B \\
+    \Sigma\mid\Gamma, x : A \vdash N : C \\
+    \Sigma\mid\Gamma, y : B \vdash P : C }
+    { \Sigma\mid\Gamma \vdash \texttt{match}\ M\ [x\Rightarrow N\mid y\Rightarrow P] : C }
   \end{mathpar}
   \caption{Typing rules}
   \label{fig:typing}
@@ -90,13 +90,13 @@ Similar to the definition of the reduction relation, we assume a typing judgemen
 % safety properties
 We can show the standard type safety properties, i.e., subject reduction and progress.
 \begin{thm}[Subject reduction]
-  If $\Sigma\mid\Gamma \vdash \dot{M} : A$, $[\sigma,\dot{M}] \to [\sigma',\dot{M}']$ and $\vdash \sigma : \Sigma$,
+  If $\Sigma\mid\Gamma \vdash M : A$, $[\sigma,M] \to [\sigma',M']$ and $\vdash \sigma : \Sigma$,
   then there exists $\Sigma'$ such that $\Sigma' \mid \Gamma \vdash M^{*'} : A$ and $\vdash \sigma' : \Sigma'$.
 \end{thm}
 
 \begin{thm}[Progress]
-  If $\Sigma \mid \Gamma \vdash \dot{M} : A$,
-  then either $\dot{M}$ is a value or there exists $\mu$ such that $[\sigma,\dot{M}] \to \mu$.
+  If $\Sigma \mid \Gamma \vdash M : A$,
+  then either $M$ is a value or there exists $\mu$ such that $[\sigma,M] \to \mu$.
 
 \end{thm}
 
