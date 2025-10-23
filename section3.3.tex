@@ -1,12 +1,12 @@
 \subsection{Operational semantics}
 This section defines the operational semantics, describing how the reference-based semantics from Section~\ref{sec:main-idea} is formalized.
 The state of a computation is captured by a \textit{configuration}: a pair of a global store and the term being evaluated.
-Crucially, the store holds the physical quantum state, while the term operates only on locations ($\mathcal{L}$)--references to that store.
+Crucially, the store holds the physical quantum state, while the term operates only on locations ($\mathcal{L}$)---references to that store.
 This separation allows contraction and weakening to be treated as logical operations on references, without directly affecting the physical quantum state.
 Because a term is rewritten to contain these locations during execution, we must first define a distinct runtime language that extends the surface syntax with them.
 
 \begin{dfn}[The runtime language $\Lambda_\mathcal{L}(\mathcal{U})$]
-  Given a finite set of store locations $\mathcal{L}$, the runtime language is defined as $\Lambda_\mathcal{L}(\mathcal{U}) := \Lambda(\mathcal{U})\cup\mathcal{L}$.
+  Given a finite set of store locations $\mathcal{L}$, the runtime language is defined as $\Lambda_\mathcal{L}(\mathcal{U}) := \Lambda(\mathcal{U}\cup\mathcal{L})$.
   We use $\dot{M}, \dot{N}, \dot{P}$ to denote runtime terms.
 \end{dfn}
 
@@ -58,11 +58,11 @@ Specifically, the \textit{interpretation} $\llbracket\hat{U}\rrbracket_\mathcal{
     \longrightarrow |\alpha_0|^2 \delta_{[\ell^2(f_0)(\sigma_0), \dot{M}[l_2/y]]} + |\alpha_1|^2\delta_{[\ell^2(f_1)(\sigma_1),\dot{N}[l_3/z]]}}
     \and
     \inferrule*[right=Q-Prep]
-    {f(\rho) = \rho\cup\{(l, \hat{V})\} \\ l \notin \mathrm{dom}(\sigma)}
+    {f(\rho) = \rho\cup\{(l, \hat{V})\} \\\\ l \notin \mathrm{dom}(\sigma)}
     {[\sigma, \hat{U}\ \hat{V}] \longrightarrow \delta_{[\ell^2(f)(\sigma), \hat{U}\ l]}}
     \and
     \inferrule*[right=Q-Evolve]
-    { f(\rho) = \sum\nolimits_{\hat{V}}\llbracket\hat{U}\rrbracket_\mathcal{U}(\rho(l_1))(\hat{V})\delta_{\rho\cup\{(l_2, \hat{V})\}} \\ l_2 \notin \mathrm{dom}(\sigma)}
+    { f(\rho) = \sum\nolimits_{\hat{V}}\llbracket\hat{U}\rrbracket_\mathcal{U}(\rho(l_1))(\hat{V})\delta_{\rho\cup\{(l_2, \hat{V})\}} \\\\ l_2 \notin \mathrm{dom}(\sigma)}
     {[\sigma, \hat{U}\ l_1] \longrightarrow \delta_{[f^\sharp(\sigma),l_2]}}
   \end{mathpar}
   \caption{Quantum reduction rules}
@@ -85,10 +85,5 @@ Since a single reduction step can yield a distribution of configurations, the \t
 \end{dfn}
 
 \begin{dfn}[Termination]
-  A surface term $M$ is said to \emph{terminate} if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow\mu$, and for every $[\sigma, V] \in \mathrm{supp}(\mu)$, $V$ is a value; we denote this by $M \Downarrow$.
+  A surface term $M$ is said to \emph{terminate}, denoted $M\Downarrow$, if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow\mu$, and for every $[\sigma, M'] \in \mathrm{supp}(\mu)$, $M'$ is a closed value.
 \end{dfn}
-
-%%% Local Variables:
-%%% mode: LaTeX
-%%% TeX-master: "main"
-%%% End:

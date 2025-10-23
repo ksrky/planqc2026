@@ -1,8 +1,10 @@
 \section{\texorpdfstring{The $\Lambda(\mathcal{U})$ calculus}{The Lambda(U) calculus}}
 \subsection{Syntax}
-As outlined in the introduction, our language is designed as a conservative extension of a non-linear lambda calculus denoted by $\Lambda$. $\Lambda$ is a set of terms including lambda terms, the unit and introductions and eliminations of products and sums. The key to our design is the isolation of quantum features from $\Lambda$, which is provided by a set $\mathcal{U}$ of external unitary operations.
+As outlined in the introduction, our language is designed as a conservative extension of a non-linear lambda calculus denoted by $\Lambda$.
+$\Lambda$ includes lambda terms, the unit and introductions and eliminations of products and sums.
+The key to our design is the isolation of quantum features from $\Lambda$, which is provided by a set $\mathcal{U}$ of external unitary operations.
 \begin{dfn}[The surface language $\Lambda(\mathcal{U})$]
-  Given a set of terms $\mathcal{U}$, the language $\Lambda(\mathcal{U})$ is a set of terms defined by the following syntax:
+  Given a set of terms $\mathcal{U}$, the language $\Lambda(\mathcal{U})$ is the set of terms defined by the following syntax:
   \begin{equation*}
     \begin{array}{rl}
       M, N, P \Coloneqq & *\mid x\mid\lambda x. M\mid M\ N\mid\langle M, N\rangle\mid\texttt{inj}_0\ M\mid\texttt{inj}_1\ M \mid \\& \texttt{let}\ \langle x, y\rangle=M\ \texttt{in}\ N\mid\texttt{match}\ M\ [x\Rightarrow N\mid y\Rightarrow P]\mid\hat{U}
@@ -12,7 +14,7 @@ As outlined in the introduction, our language is designed as a conservative exte
 \end{dfn}
 
 From the perspective of the host language $\Lambda(\cdot)$, $\hat{U}$ is treated as an opaque, first-class value.
-The language $\mathcal{U}$ can represent any unitary transformation, ranging from a simple unitary gate to a complex subroutine that could be described by a domain-specific language, such as one based on the 'Quantum Data, Quantum Control' paradigm.
+The language $\mathcal{U}$ can represent any unitary transformation, ranging from a simple unitary gate to a complex subroutine that could be described by a domain-specific language, such as one based on the `Quantum Data, Quantum Control' paradigm.
 \begin{ex} \label{ex:classical}
   The classical bit can be represented as $i \equiv \texttt{inj}_i\ *$ where $i=0,1$.
   A standard conditional expression $\texttt{if}\ M\ \texttt{then}\ N\ \texttt{else}\ P$ can be written as a syntactic sugar for $\texttt{match}\ M\ [x\Rightarrow N\mid y\Rightarrow P]$, where $x$ and $y$ are fresh variables.
@@ -51,7 +53,5 @@ When it is evaluated to superposition of inl and inr, it performs a measurement 
 It should be noted that the \textit{not} function in Example \ref{ex:classical} does not behave as the $X$ gate (or the quantum NOT gate) when applied to a qubit, because the input is measured in the condition of the if expression, which collapses any superposition.
 
 As a powerful example of this encapsulation of $\mathcal{U}$, a syntax inspired by pattern isomorphism\cite{SABRY2018_SymmetricPatternMatchingQuantum} allows for the direct declaration of unitary operations as follows.
-\begin{ex}[Pattern isomorphism for unitaries]
-  Let $\mathcal{U}$ be defined using the pattern isomorphism syntax.
-  For instance, $X$ gate can be defined as $X \equiv \{0 \leftrightarrow 1\mid 1 \leftrightarrow 0\}$.
-\end{ex}
+Let $\mathcal{U}$ be defined using the pattern isomorphism syntax.
+For instance, an $X$ gate can be defined as $X \equiv \{0 \leftrightarrow 1\mid 1 \leftrightarrow 0\}$.

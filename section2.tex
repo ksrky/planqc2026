@@ -10,10 +10,10 @@ Similarly, weakening is simply the act of dropping a reference.
 As these are purely logical operations on references, they do not violate any physical laws.
 The physical instantiation of a quantum state occurs only when a unitary operator is applied to one of its duplicated references.
 Specifically, if the state is expressed as $\sum_i\alpha_i\ket{i}$, where $\{\ket{i}\}$ is a basis set, and a unitary $U$ is applied, the operation transforms the state into the entangled state $\sum_i\alpha_i\ket{i}(U\ket{i})$.
-This is similar to the '\textit{Contraction as sharing}' concept like in \cite{ALTENKIRCH2005_FunctionalQuantumProgramming,ARRIGHI2004_OperationalSemanticsFormal}, but it occurs not at the contraction step, but right before the application of a unitary.
+This is similar to the `\textit{Contraction as sharing}' concept like in \cite{ALTENKIRCH2005_FunctionalQuantumProgramming,ARRIGHI2004_OperationalSemanticsFormal}, but it occurs not at the contraction step, but right before the application of a unitary.
 
 This design has profound consequences for the language's equational theory.
-Consider a copy function $\delta \equiv \lambda x.\langle x,x\rangle$ and a projection $\pi_1 \equiv \lambda\langle x,y\rangle.x$. In our system, the identity $\pi_1\circ\delta=\lambda x. x$ holds.
+Consider a copy function $\delta \equiv \lambda x.\langle x,x\rangle$ and a projection $\pi_1 \equiv \lambda\langle x,y\rangle.x$. In our system, the equality $\pi_1\circ\delta=\lambda x. x$ holds.
 This is because weakening (via $\pi_1$) is a logical dereference, not a physical act.
 In contrast, this identity fails in languages like QML\cite{ALTENKIRCH2005_FunctionalQuantumProgramming} or Qunity\cite{VOICHICK2023_QunityUnifiedLanguage}, where weakening is interpreted as a partial trace.
 In those systems, the composition $\pi_1\circ\delta$ induces decoherence, mapping a pure state to a mixed one.
@@ -24,7 +24,7 @@ The application of the unitary $I$ makes $I\ x$ a distinct physical instance fro
 The evaluation procedure for this case is illustrated in Fig.~\ref{fig:grids}.
 This behavior does not violate the conservative extension property of our language.
 Unitary operators like $I$ are separated from the classical fragment.
-The conservative property applies only to the common language, and equational laws are not expected to hold for terms containing unitaries.
+The conservativity applies only to the common language, and equational laws are not expected to hold for terms containing unitaries.
 
 \begin{figure}[t]
   \centering
