@@ -26,8 +26,8 @@ $\dot{V}$ and $\dot{W}$ in the rules denote values with locations.
   \Description{A set of inference rules defining basic beta reduction in the operational semantics. The rules include beta reduction for lambda abstraction, product types, and sum types with two cases for injections. Each rule shows how a term in a specific form reduces to another term by substituting values for variables.}
 \end{figure}
 
-The relation $\longrightarrow$ is defined by the rules in Fig.~\ref{fig:reduction} and Fig.~\ref{fig:reduction-beta}, together with the congruence rule induced by the evaluation context.
-The evaluation contexts are defined as:
+The relation $\longrightarrow$ is defined by the rules in Fig.~\ref{fig:reduction} and Fig.~\ref{fig:reduction-beta}, together with the congruence rule induced by the evaluation contexts.
+They are defined as:
 \begin{equation*}
   \begin{array}{rl}
     E \Coloneqq & [\cdot]\mid E\ M\mid V\ E\mid\langle E, M\rangle\mid\langle V,E\rangle\mid\texttt{inj}_0\ E\mid\texttt{inj}_1\ E\mid \\

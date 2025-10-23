@@ -22,7 +22,8 @@ The set of all basis values is denoted by $\mathcal{V}_0$.
 
 A configuration $[\sigma, \dot{M}]$ represents the state of a computation.
 The quantum store $\sigma$ is a vector in a free Hilbert space over value stores (finite maps from locations $\mathcal{L}$ to basis values $\mathcal{V}_0$), while $\dot{M}$ is the runtime term containing references to $\sigma$.
-The set of all configurations is denoted by $\mathcal{C}$.
+Each value store in the support of $\sigma$ must have the same domain; we can define $\text{dom}(\sigma)$ without ambiguity.
+Write $\mathcal{C}$ for the set of all configurations.
 
 The operational semantics are defined by a call-by-value, small-step reduction relation ($\longrightarrow$).
 The key rules in Fig.~\ref{fig:reduction} directly correspond to the four postulates of quantum mechanics\cite{NIELSEN2010_QuantumComputationQuantum}.
