@@ -1,3 +1,82 @@
+\message{ !name(main.tex)}\documentclass[acmsmall, nonacm, review]{acmart}
+
+% supress font size warnings
+\usepackage{anyfontsize}
+\usepackage{fix-cm}
+
+\let\Bbbk\relax % avoid clash
+
+\usepackage{amsmath,amssymb,bm,amsfonts,amsthm,mathtools}
+\usepackage[only,llbracket,rrbracket,llparenthesis,rrparenthesis]{stmaryrd}
+\usepackage{physics}
+\usepackage{mathpartir}
+\usepackage{tikz-cd}
+\usepackage{qcircuit}
+\usepackage{thm-restate}
+
+\usetikzlibrary{positioning, arrows.meta, shapes.multipart, shadows, shapes.geometric, math}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{dfn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+
+\tikzset{
+  node distance=1cm and 1.5cm,
+  title/.style={
+      font=\bfseries\small
+    },
+  mem/.style={
+      rectangle,
+      draw,
+      thick,
+      fill=blue!10,
+      minimum height=1cm,
+      minimum width=1cm,
+      drop shadow
+    },
+  op/.style={
+      ellipse,
+      draw,
+      thick,
+      fill=green!10,
+      minimum height=0.6cm,
+      minimum width=0.9cm
+    },
+  arr/.style={
+      -Stealth,
+      thick
+    }
+}
+
+\title{A Non-linear Quantum Lambda Calculus}
+\author{Rikiya Kashiwagi}
+\author{Atsushi Igarashi}
+\affiliation{%
+  \institution{Kyoto University}
+  \department{Graduate School of Informatics}
+  \city{Kyoto}
+  \country{Japan}
+}
+\email{{kashiwagi,igarashi}@fos.kuis.kyoto-u.ac.jp}
+
+\begin{abstract}
+  This paper presents a quantum extension of lambda calculus without linearity, reinterpreting contraction and weakening as logical operations on references to quantum states, rather than on the states themselves.
+  The proposed calculus is a conservative extension of the normal lambda calculus, preserving its operational equivalence.
+  This provides a familiar yet powerful framework for hybrid quantum-classical programming.
+\end{abstract}
+
+%\keywords{quantum programming language, lambda calculus}
+
+\begin{document}
+
+\message{ !name(appendixC.tex) !offset(-79) }
 \section{Type system} \label{sec:type-system}
 We present the simple type system of $\Lambda(\mathcal{U})$ calculus.
 Syntax of types and typing context is given as follows.
@@ -97,28 +176,15 @@ We can show the standard type safety properties, i.e., subject reduction and pro
 \begin{thm}[Progress]
   If $\Sigma \mid \Gamma \vdash M : A$,
   then either $M$ is a value or there exists $\mu$ such that $[\sigma,M] \to \mu$.
+
 \end{thm}
 
-\subsection{Contextual equivalence}
+\subsection{Contetual equivalence}
 
-\begin{equation*}
-  \Gamma \vdash M \approx N : A \Leftrightarrow_\text{def} \forall C[\cdot] \in \Lambda(\mathcal{U}).\ \exists B.\ (\vdash C : \emptyset\mid\Gamma \vdash A \Longrightarrow \emptyset\mid\epsilon\vdash B) \Rightarrow (C[M]\Downarrow \Leftrightarrow C[N]\Downarrow)
-\end{equation*}
+\begin{equation}
+  \Gamma \vdash M \approx N : A = \forall C[\cdot] \in \Lambda(\mathcal{U}).\ \vdash C : (\emptyset\mid\Gamma \vdash A)\doublerightarrow (\emptyset\mid\epsilon\vdash B) \Rightarrow (C[M]\Downarrow \Leftrightarrow C[N])
+\end{equation}
 
-\begin{align*}
-  \mathcal{V}_\top & = \{(*, *)\} \\
-  \mathcal{V}_{A\otimes B} & = \{(\langle V_1, V_2\rangle, \langle W_1, W_2\rangle) \mid (V_1, W_1) \in \mathcal{V}_A, (V_2, W_2) \in \mathcal{V}_B\} \\
-  \mathcal{V}_{A\oplus B} & = \{(\texttt{inj}_0\ V, \texttt{inj}_0\ W) \mid (V, W) \in \mathcal{V}_A\} \cup \{(\texttt{inj}_1\ V, \texttt{inj}_1\ W) \mid (V, W) \in \mathcal{V}_B\} \\
-  \mathcal{V}_{A\rightarrow B} & = \{(\lambda x.M, \lambda x.N) \mid \forall (V, W) \in \mathcal{V}_A.\ (M[V/x], N[W/x]) \in \mathcal{R}_B\}
-\end{align*}
+\message{ !name(main.tex) !offset(-94) }
 
-\begin{align*}
-  \mathcal{R}_A & = \{(M, N) \mid [\delta_\emptyset, M] \Downarrow V \land [\delta_\emptyset, N] \Downarrow W \Rightarrow (V, W) \in \mathcal{V}_A\}
-\end{align*}
-
-\begin{align*}
-  \mathcal{V}_\top & = \{(*, *)\} \\
-  \mathcal{V}_{A\otimes B} & = \{(\langle V_1, V_2\rangle, \langle W_1, W_2\rangle) \mid (V_1, W_1) \in \mathcal{V}_A, (V_2, W_2) \in \mathcal{V}_B\} \\
-  \mathcal{V}_{A\oplus B} & = \{(\texttt{inj}_0\ V, \texttt{inj}_0\ W) \mid (V, W) \in \mathcal{V}_A\} \cup \{(\texttt{inj}_1\ V, \texttt{inj}_1\ W) \mid (V, W) \in \mathcal{V}_B\} \\
-  \mathcal{V}_{A\rightarrow B} & = \{(\lambda x.M, \lambda x.N) \mid \forall (V, W) \in \mathcal{V}_A.\ (M[V/x], N[W/x]) \in \mathcal{R}_B\}
-\end{align*}
+\end{document}
