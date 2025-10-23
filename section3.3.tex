@@ -6,7 +6,7 @@ This separation allows contraction and weakening to be treated as logical operat
 Because a term is rewritten to contain these locations during execution, we must first define a distinct runtime language that extends the surface syntax with them.
 
 \begin{dfn}[The runtime language $\Lambda_\mathcal{L}(\mathcal{U})$]
-  Given a finite set of store locations $\mathcal{L}$, the runtime language is defined as $\Lambda_\mathcal{L}(\mathcal{U}) := \Lambda(\mathcal{U}\cup\mathcal{L})$.
+  Given a set of store locations $\mathcal{L}$, the runtime language is defined as $\Lambda_\mathcal{L}(\mathcal{U}) := \Lambda(\mathcal{U}\cup\mathcal{L})$.
   To simplify notation, $M, N, P$ will also range over runtime terms.
   We will explicitly refer to surface terms when the distinction is significant.
 \end{dfn}
