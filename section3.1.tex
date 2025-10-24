@@ -10,7 +10,7 @@ The key to our design is the isolation of quantum features from $\Lambda$, which
       M, N, P \Coloneqq & *\mid x\mid\lambda x. M\mid M\ N\mid\langle M, N\rangle\mid\texttt{inj}_0\ M\mid\texttt{inj}_1\ M \mid \\& \texttt{let}\ \langle x, y\rangle=M\ \texttt{in}\ N\mid\texttt{match}\ M\ [x\Rightarrow N\mid y\Rightarrow P]\mid\hat{U}
     \end{array}
   \end{equation*}
-  where $\hat{U}\in\mathcal{U}$. Alternatively, $\Lambda(\mathcal{U})$ is defined as $\Lambda\cup\mathcal{U}$.
+  where $\hat{U}\in\mathcal{U}$.
 \end{dfn}
 
 From the perspective of the host language $\Lambda(\cdot)$, $\hat{U}$ is treated as an opaque, first-class value.
