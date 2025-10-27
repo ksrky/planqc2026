@@ -8,12 +8,8 @@ A context $C[\cdot]$ is defined as a term with a single hole $[\cdot]$ in it.
   For $M, N \in \Lambda$, $M\approx N$ iff for any context $C[\cdot]\in\Lambda(\mathcal{U})$, $C[M] \Downarrow \Leftrightarrow C[N] \Downarrow$.
 \end{dfn}
 
-Conservativity is then stated as the following theorem. The proof is given in Appendix \ref{sec:conserv-proof}.
+Conservativity is then stated as the following theorem.
+The proof is given in Appendix \ref{sec:conserv-proof}.
 \begin{restatable}[Conservativity]{thm}{ConservTheorem} \label{thm:conservativity}
-  For all $M, N \in \Lambda$, $M \leftrightarrow_\Lambda N$ iff $M \leftrightarrow N$.
+  For all $M, N \in \Lambda$, $M \longleftrightarrow^*_\Lambda N$ iff $M \longleftrightarrow^* N$.
 \end{restatable}
-
-If the equivalence closure ($\leftrightarrow^*$) is a congruence,
-\begin{equation*}
-  M \leftrightarrow^* N \Rightarrow M \approx N
-\end{equation*}

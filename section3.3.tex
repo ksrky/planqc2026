@@ -77,7 +77,7 @@ A key property to the physical realizability of the semantics is norm preservati
 
 Since a single reduction step can yield a distribution of configurations, we lift the reduction relation to distributions over configurations.
 \begin{dfn}[Distributive reduction]
-  $\mu \Longrightarrow \mu'$ iff for all $[\sigma,M]\in\mathrm{supp}(\mu)$, there exists $\nu_{\sigma,M}$ such that $[\sigma,M] \longrightarrow \nu_{\sigma,M}$ and $\mu' = \sum_{[\sigma,M]\in\mathrm{supp}(\mu)} \mu([\sigma,M])\nu_{\sigma,M}$.
+  The distributive reduction relation $\Longrightarrow \subseteq \mathcal{D}(\mathcal{C})\times \mathcal{D}(\mathcal{C})$ is defined as: $\mu \Longrightarrow \mu'$ iff for each $[\sigma,M]\in\mathrm{supp}(\mu)$, there exists $\nu_{\sigma,M}$ such that $[\sigma,M] \longrightarrow \nu_{\sigma,M}$ and $\mu' = \sum_{[\sigma,M]\in\mathrm{supp}(\mu)} \mu([\sigma,M])\nu_{\sigma,M}$.
   % Each reduction step has finite probablistic branches; thus the summation is well-defined.
 \end{dfn}
 
