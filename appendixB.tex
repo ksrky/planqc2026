@@ -3,23 +3,23 @@
   \begin{mathpar}
     \inferrule*[right=$\beta$-\textsc{Lam}]
     {}
-    { (\lambda x.M)\ V \longrightarrow M\{V/x\} }
+    { (\lambda x.M)\ V =_\beta M[V/x] }
     \and
     \inferrule*[right=$\beta$-\textsc{Let}]
     {}
-    { \texttt{let}\ \langle x,y\rangle = \langle V, W\rangle\ \texttt{in}\ N \longrightarrow N\{V/x,W/y\} }
+    { \texttt{let}\ \langle x,y\rangle = \langle V, W\rangle\ \texttt{in}\ N =_\beta N[V/x,W/y] }
     \and
     \inferrule*[right=$\beta$-\textsc{Inj}$_0$]
     {}
-    { \texttt{match}\ \texttt{inj}_0\ V\ [x\Rightarrow N\mid y\Rightarrow P] \longrightarrow N\{V/x\} }
+    { \texttt{match}\ \texttt{inj}_0\ V\ [x\Rightarrow N\mid y\Rightarrow P] =_\beta N[V/x] }
     \and
     \inferrule*[right=$\beta$-\textsc{Inj}$_1$]
     {}
-    { \texttt{match}\ \texttt{inj}_1\ V\ [x\Rightarrow N\mid y\Rightarrow P] \longrightarrow P\{V/y\} }
+    { \texttt{match}\ \texttt{inj}_1\ V\ [x\Rightarrow N\mid y\Rightarrow P] =_\beta P[V/y] }
     \and
     \inferrule*[right=\textsc{Cong}]
-    { M = N }
-    { C[M] = C[N] }
+    { M =_\beta N }
+    { C[M] =_\beta C[N] }
   \end{mathpar}
   \caption{Equational rules for classical fragment}
 \end{figure}
@@ -52,7 +52,7 @@
   We prove by induction on the derivation of the multi-step reduction relation.
   \begin{itemize}
     \item If $C[M] \Downarrow$ is $[\delta_\emptyset, C[M]] \longrightarrow^* \delta_{[\delta_\emptyset,V]}$ for some $V$, then $C[M] = V$.
-            $C[\cdot]$ must be one of the following forms: $[\cdot]$, $\lambda x.C_1[\cdot]$, $\langle C_2[\cdot], \dot{W}\rangle$, $\langle \dot{W}, C_2[\cdot]\rangle$, $\texttt{inj}_0\ C_2[\cdot]$, $\texttt{inj}_1\ C_2[\cdot]$ where $C_1[\cdot]$ is a term and $C_2[\cdot]$ and $\dot{W}$ are some value.
+          $C[\cdot]$ must be one of the following forms: $[\cdot]$, $\lambda x.C_1[\cdot]$, $\langle C_2[\cdot], \dot{W}\rangle$, $\langle \dot{W}, C_2[\cdot]\rangle$, $\texttt{inj}_0\ C_2[\cdot]$, $\texttt{inj}_1\ C_2[\cdot]$ where $C_1[\cdot]$ is a term and $C_2[\cdot]$ and $\dot{W}$ are some value.
           In each case, $C[N]$ is also a value.
     \item If the first reduction step of $C[M] \Downarrow$ is $[\delta_\emptyset, C[M]] \longrightarrow \mu$, then we do case analysis on the rule applied in this step.
           %\begin{itemize}

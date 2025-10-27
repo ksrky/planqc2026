@@ -6,19 +6,19 @@ These rules are standard for call-by-value lambda calculus, and do not interact 
   \begin{mathpar}
     \inferrule*[right=$\beta$-Lam]
     {}
-    {[\sigma,(\lambda x. M)\ V] \longrightarrow [\sigma,M[V/x]]}
+    {(\lambda x. M)\ V \longrightarrow_\Lambda M[V/x]}
     \and
     \inferrule*[right=$\beta$-Pair]
     {}
-    {[\sigma,\texttt{let}\ \langle x,y\rangle=\langle V,W\rangle\ \texttt{in}\ M] \longrightarrow [\sigma,M[V/x,W/y]]}
+    {\texttt{let}\ \langle x,y\rangle=\langle V,W\rangle\ \texttt{in}\ M \longrightarrow_\Lambda ,M[V/x,W/y]}
     \and
     \inferrule*[right=$\beta$-Inj$_0$]
     {}
-    {[\sigma,\texttt{match}\ \texttt{inj}_0\ V\ [x\Rightarrow M\mid y\Rightarrow N]] \longrightarrow [\sigma,M[V/x]]}
+    {\texttt{match}\ \texttt{inj}_0\ V\ [x\Rightarrow M\mid y\Rightarrow N] \longrightarrow_\Lambda M[V/x]}
     \and
     \inferrule*[right=$\beta$-Inj$_1$]
     {}
-    {[\sigma,\texttt{match}\ \texttt{inj}_1\ V\ [x\Rightarrow M\mid y\Rightarrow N]] \longrightarrow [\sigma,N[V/y]]}
+    {\texttt{match}\ \texttt{inj}_1\ V\ [x\Rightarrow M\mid y\Rightarrow N] \longrightarrow_\Lambda N[V/y]}
   \end{mathpar}
   \caption{Classical reduction rules}
   \label{fig:reduction-beta}

@@ -80,8 +80,13 @@ Since a single reduction step can yield a distribution of configurations, the \t
   The multi-step reduction relation $\longrightarrow^*\subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation satisfying:
   \begin{itemize}
     \item $[\sigma,M] \longrightarrow^*\delta_{[\sigma,M]}$ for all $[\sigma,M]\in\mathcal{C}$.
-    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow^*\nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow^*\sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
+    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow^*\nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow\sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
+          % Each reduction step has finite probablistic branches; thus the summation is well-defined.
   \end{itemize}
+\end{dfn}
+
+\begin{dfn}[Distributive reduction]
+  $\mu \Longrightarrow \mu'$ iff for all $[\sigma,M]\in\mathrm{supp}(\mu)$, there exists $\nu_{\sigma,M}$ such that $[\sigma,M] \longrightarrow^* \nu_{\sigma,M}$ and $\mu' = \sum_{[\sigma,M]\in\mathrm{supp}(\mu)} \mu([\sigma,M])\nu_{\sigma,M}$.
 \end{dfn}
 
 \begin{dfn}[Termination]
