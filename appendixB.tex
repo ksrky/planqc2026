@@ -1,74 +1,33 @@
 \section{Proof of conservativity} \label{sec:conserv-proof}
-\begin{figure}[h]
-  \begin{mathpar}
-    \inferrule*[right=$\beta$-\textsc{Lam}]
-    {}
-    { (\lambda x.M)\ V =_\beta M[V/x] }
-    \and
-    \inferrule*[right=$\beta$-\textsc{Let}]
-    {}
-    { \texttt{let}\ \langle x,y\rangle = \langle V, W\rangle\ \texttt{in}\ N =_\beta N[V/x,W/y] }
-    \and
-    \inferrule*[right=$\beta$-\textsc{Inj}$_0$]
-    {}
-    { \texttt{match}\ \texttt{inj}_0\ V\ [x\Rightarrow N\mid y\Rightarrow P] =_\beta N[V/x] }
-    \and
-    \inferrule*[right=$\beta$-\textsc{Inj}$_1$]
-    {}
-    { \texttt{match}\ \texttt{inj}_1\ V\ [x\Rightarrow N\mid y\Rightarrow P] =_\beta P[V/y] }
-    \and
-    \inferrule*[right=\textsc{Cong}]
-    { M =_\beta N }
-    { C[M] =_\beta C[N] }
-  \end{mathpar}
-  \caption{Equational rules for classical fragment}
-\end{figure}
 
 \begin{lem} \label{lem:classical-step}
-  For any $M \in \Lambda$, if $M \longrightarrow M'$, then $M \longrightarrow_\beta M'$ and $M' \in \Lambda$.
+  For any $M \in \Lambda$ and $\mu$, if $M \longrightarrow^* \mu$ holds, then there exists $M' \in \Lambda$ such that $M \longrightarrow^*_\Lambda M'$.
 \end{lem}
 \begin{proof}
-  By induction on the derivation of $M \longrightarrow M'$.
+  First, we prove that if $[\sigma, M] \longrightarrow \mu$ then $\exists M'. M \longrightarrow_\Lambda M'$ by induction on the derivation of $M \longrightarrow \mu$.
+  \begin{itemize}
+    \item Case $\beta$ rules: The same rule applies to $\longrightarrow_\Lambda$ and $\mu = \delta_{[\delta_\emptyset, M']}$.
+    \item Case \textsc{Q} rules: Impossible since each $M$ includes a unitary or locations, meaning $M \notin \Lambda$.
+  \end{itemize}
+  Then, the original statement is proved by simple induction on the derivation of $M \longrightarrow^* \mu$.
 \end{proof}
 
-\begin{lem} \label{lem:classical-eval}
-  For any $M \in \Lambda$, $M \Downarrow_\beta$ iff $M \Downarrow$.
+Church-Rosser and confluence properties for the classical reduction directly follows from the determinism of $\longrightarrow_\Lambda$.
+\begin{lem}[Church-Rosser for classical reduction] \label{lem:classical-confluent}
+  For any $M, N \in \Lambda$, if $M \longleftrightarrow^*_\Lambda N$ holds, then there exists $P \in \Lambda$ such that $M \longrightarrow^*_\Lambda P$ and $N \longrightarrow^*_\Lambda P$.
 \end{lem}
-\begin{proof}
-  (\textbf{Sufficiency})
-  As the classical reduction relation $\longrightarrow_\beta$ is a subset of the full reduction relation $\longrightarrow$, also $\longrightarrow_\beta^* \subseteq \longrightarrow^*$ holds.
-
-  (\textbf{Necessity})
-  By Lemma \ref{lem:classical-step}, every step in the reduction sequence from $M$ to a value $V$ under $\longrightarrow$ corresponds to a step under $\longrightarrow_\beta$.
-  Thus, if $M \Downarrow$, there exists a sequence of reductions under $\longrightarrow_\beta$ from $M$ to $V$, establishing $M \Downarrow_\beta$.
-\end{proof}
+\begin{lem}[Confluence for classical reduction] \label{lem:classical-confluent-single}
+  For any $M, N_1, N_2 \in \Lambda$, if $M \longrightarrow_\Lambda N_1$ and $M \longrightarrow_\Lambda N_2$ hold, then there exists $P \in \Lambda$ such that $N_1 \longrightarrow^*_\Lambda P$ and $N_2 \longrightarrow^*_\Lambda P$.
+\end{lem}
 
 \ConservTheorem*
 \begin{proof}[Proof]
-  (\textbf{Sufficiency})
-  Assume $M\approx_\beta N$ and let $C[\cdot] \in \Lambda(\mathcal{U})$ be any context.
-  We prove if $C[M] \Downarrow$, then $C[N] \Downarrow$ holds.
-  The converse direction is ommitted since it can be shown in the same way.
-  We prove by induction on the derivation of the multi-step reduction relation.
-  \begin{itemize}
-    \item If $C[M] \Downarrow$ is $[\delta_\emptyset, C[M]] \longrightarrow^* \delta_{[\delta_\emptyset,V]}$ for some $V$, then $C[M] = V$.
-          $C[\cdot]$ must be one of the following forms: $[\cdot]$, $\lambda x.C_1[\cdot]$, $\langle C_2[\cdot], \dot{W}\rangle$, $\langle \dot{W}, C_2[\cdot]\rangle$, $\texttt{inj}_0\ C_2[\cdot]$, $\texttt{inj}_1\ C_2[\cdot]$ where $C_1[\cdot]$ is a term and $C_2[\cdot]$ and $\dot{W}$ are some value.
-          In each case, $C[N]$ is also a value.
-    \item If the first reduction step of $C[M] \Downarrow$ is $[\delta_\emptyset, C[M]] \longrightarrow \mu$, then we do case analysis on the rule applied in this step.
-          %\begin{itemize}
-          %  \item Case $\beta$-\textsc{Lam}: If $C[M]$ is $C'[M]\ \dot{V}$, then by the induction hypothesis, $C'[N]$ also terminates.
-          %        If $C[M]$ is $(\lambda x.M')\ \dot{V}$, then $C$ is a hole and $M = \dot{V}$.
-          %\end{itemize}
-  \end{itemize}
-  (\textbf{Necessity})
-  Proof by contrapositive.
-  We assume $M \not\approx_{\beta} N$ for $M, N \in \Lambda$, and show that this implies $M \not\approx N$.
-  The assumption $M \not\approx_{\beta} N$ means there exists a classical context $C[\cdot] \in \Lambda$ that distinguishes $M$ and $N$ in the classical fragment.
-  Without loss of generality, let's assume $C[M] \Downarrow_\beta$ while $C[N] \Downarrow_\beta$ does not hold.
-
-  Since $C[M] \Downarrow_\beta$, Lemma~\ref{lem:classical-eval} implies that $C[M] \Downarrow$.
-  Since the evaluation of $C[N]$ under the classical rules diverges, the lemma implies that the evaluation of $C[N]$ in the full semantics also diverge.
-
-  Thus, the very same classical context $C[\cdot] \in \Lambda$, which is also a valid context in $\Lambda(\mathcal{U})$, serves to distinguish $M$ and $N$ in the full semantics.
-  This establishes that $M \not\approx N$, completing the proof of the contrapositive.
+  ($\Rightarrow$)
+  By Lemma \ref{lem:classical-confluent}, there exists $P \in \Lambda$ such that $M \longrightarrow^*_\Lambda P$ and $N \longrightarrow^*_\Lambda P$.
+  Then, by defition of $\longrightarrow$, we have $[\delta_\emptyset, M] \longrightarrow^* \delta_{[\delta_\emptyset, P]}$ and $[\delta_\emptyset, N] \longrightarrow^* \delta_{[\delta_\emptyset, P]}$, which implies $M \longleftrightarrow^* N$.
+  \\
+  ($\Leftarrow$)
+  By the definition of $\longleftrightarrow^*$, there exists $\mu$ such that $[\delta_\emptyset, M] \longrightarrow^* \mu$ and $[\delta_\emptyset, N] \longrightarrow^* \mu$.
+  By Lemma \ref{lem:classical-step}, there exists $M', N' \in \Lambda$ such that $M \longrightarrow^*_\Lambda M'$ and $N \longrightarrow^*_\Lambda N'$.
+  By Lemma \ref{lem:classical-confluent}, there exists $P \in \Lambda$ such that $M' \longrightarrow^*_\Lambda P$ and $N' \longrightarrow^*_\Lambda P$; hence, we have $M \longleftrightarrow^*_\Lambda N$.
 \end{proof}

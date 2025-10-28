@@ -4,7 +4,7 @@ Within this paradigm, variables representing quantum states are treated as linea
 While this linearity ensures the physical correctness, it creates a significant gap with the intutions of classical, non-linear programming.
 
 This paper proposes a quantum language designed as a direct quantum extension of the normal (non-linear) lambda calculus.
-Our central design principle is to ensure this extension is conservative; that is, the operational equivalence of our extended language is preserved by the original non-linear lambda calculus.
+Our central design principle is to ensure this extension is conservative; specifically, $\beta$-equivalence of the original non-linear lambda calculus is preserved by the quantum extension.
 This approach ensures any embedded classical program executes with its standard semantics, making the language's classical fragment indistinguishable from the original lambda calculus.
 A key consequence of enforcing this conservativity property is that the quantum features of the language are cleanly isolated from the classical host.
 This quantum-native fragment, consisting of encapsulated unitary operations, forms a distinct module for expressing quantum control.
