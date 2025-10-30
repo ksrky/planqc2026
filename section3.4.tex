@@ -1,0 +1,16 @@
+\subsection{Conservativity}
+As mentioned in Section \ref{sec:intro}, the central design principle of our language is \textit{conservativity}; a formal guarantee that the quantum extension does not alter the original behavior of the classical fragment.
+Informally, this means that for any term, one may apply the classical reduction rules to the subterms that do not contain $\hat{U}$ without changing the overall behavior of the term.
+
+Conservativity is then stated as the following theorem.
+The proof is given in Appendix \ref{sec:conserv-proof}.
+\begin{restatable}[Conservativity]{thm}{ConservTheorem} \label{thm:conservativity}
+  For all $M, N \in \Lambda$, $M \longleftrightarrow^*_\Lambda N$ iff $M \longleftrightarrow^* N$.
+\end{restatable}
+This property cannot be proved for general operational equivalence other than $\beta$-equivalence since our language yields side-effects through measurement.
+Actually, $\eta$-equivalence of \texttt{match} does not hold in general.
+Consider the term $\texttt{match}\ x\ [y\Rightarrow \texttt{inj}_0\ y\mid z\Rightarrow \texttt{inj}_1\ z]$.
+In classical reduction, it is $\eta$-equivalent to $x$.
+However, $x$ can store a quantum state, and thus measuring it results in a probabilistic outcome.
+
+
