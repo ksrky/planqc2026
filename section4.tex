@@ -1,20 +1,9 @@
 \section{Discussion}
+This paper establishes a non-linear calculus that reinterprets structural rules as reference operations, preserving key classical identities like $\pi_{1}\circ\delta=\lambda x.x$.
+The central conjecture, crucial for justifying classical reasoning, remains that full $\beta_V$-equivalence is preserved by quantum contextual equivalence.
+A proof may require adapting bisimulation techniques, such as those in \cite{DALLAGO2014_CoinductiveEquivalencesHigherorder,SANGIORGI2019_EnvironmentalBisimulationsProbabilistic}, to our quantum semantics.
+It should be noted that $\eta_V$-equivalence for $\texttt{match}$ does not hold in general because measurement induces probabilistic branching, e.g., $\texttt{match}\ x\ [y\Rightarrow \texttt{inj}_0\ y\mid z\Rightarrow \texttt{inj}_1\ z] \not\approx x$.
 
-\begin{itemize}
-\item Prove the conjecture (cite Dal Lago's work); discuss soundness of $\eta_V$-equivalence.
-\item Discuss that the present semantics consumes too many qubits.
-  This is OK as the proposed calculus is a semantic basis.  For
-  implementation, we need some kind of garbage collection (?).
-\end{itemize}
-
-This paper established that classical $\beta$-equivalence is preserved by contextual equivalence ($\leftrightarrow_\beta \Rightarrow \approx$), which justifies applying classical optimizations to the classical fragment.
-However, the converse, and thus a full conservative extension result for observational equivalence, fails.
-This is a necessary design choice, as the observational effect of measurement breaks $\eta$-equivalence for constructs like match, i.e., $\texttt{match}\ x\ [y\Rightarrow \texttt{inj}_0\ y\mid z\Rightarrow \texttt{inj}_1\ z] \not\approx x$.
-The true conservative extension property should relate the equational theories of the two calculi.
-Formulating this remains a significant open problem, as our probabilistic reduction relation ($[\sigma, M] \longrightarrow \mu$) requires a novel definition of an equivalence closure that can operate on distributions, a topic we leave for future investigation.
-
-
-%We aim to develop both practical compilation techniques and theoretical extensions.
-%An intermediate language will be designed to explicitly describe interactions between classical and quantum systems through lower-level quantum operations.
-%Although the simply typed system is presented in Appendix~\ref{sec:type-system}, it can be extended with polymorphism and recursive types.
-%We are also working on a denotational semantics to formalize the language's mathematical interpretations.
+A second point concerns resource management.
+Our high-level semantics, where new store locations imply new qubits, is a deliberate abstraction for a clear operational model.
+For a practical implementation, we should introduce a compiler layer responsible for explicit resource management, such as garbage collection or qubit reuse.

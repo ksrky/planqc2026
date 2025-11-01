@@ -13,7 +13,8 @@ Specifically, if the state is expressed as $\sum_i\alpha_i\ket{i}$, where $\{\ke
 This is similar to the `\textit{Contraction as sharing}' concept like in \cite{ALTENKIRCH2005_FunctionalQuantumProgramming,ARRIGHI2004_OperationalSemanticsFormal}, but it occurs not at the contraction step, but right before the application of a unitary.
 
 This design has profound consequences for the language's equational theory.
-Consider a copy function $\delta \equiv \lambda x.\langle x,x\rangle$ and a projection $\pi_1 \equiv \lambda\langle x,y\rangle.x$. In our system, the equality $\pi_1\circ\delta=\lambda x. x$ holds.
+Consider a copy function $\delta \equiv \lambda x.\langle x,x\rangle$ and a projection $\pi_1 \equiv \lambda\langle x,y\rangle.x$.
+In our system, the equality $\pi_1\circ\delta=\lambda x. x$ holds.
 This is because weakening (via $\pi_1$) is a logical dereference, not a physical act.
 In contrast, this identity fails in languages like QML\cite{ALTENKIRCH2005_FunctionalQuantumProgramming} or Qunity\cite{VOICHICK2023_QunityUnifiedLanguage}, where weakening is interpreted as a partial trace.
 In those systems, the composition $\pi_1\circ\delta$ induces decoherence, mapping a pure state to a mixed one.
