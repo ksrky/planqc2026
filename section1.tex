@@ -8,7 +8,7 @@ Our central design principle is to ensure that this extension behaves conservati
 This approach ensures any embedded classical program executes with its standard semantics, enabling seamless integration of classical and quantum programs.
 
 A key consequence of enforcing this principle is that the quantum features of the language are cleanly isolated from the classical host.
-This quantum-native fragment, consisting of encapsulated unitary operations, forms a distinct module for expressing quantum control.
+This quantum-native fragment, consisting of a set of unitary operations, forms a distinct module for expressing quantum control.
 This separation provides a natural framework that enables coexistence of the historically separate paradigms of `\textit{Quantum Data, Classical Control}'\cite{SELINGER2004_QuantumProgrammingLanguage} and `\textit{Quantum Data, Quantum Control}'\cite{DÍAZ-CARO2022_QuickOverviewQuantum}.
 That means a programmer can compose the main logic in a higher-order classical style, while delegating complex quantum subroutines to specialized, domain-specific modules.
 The resulting language provides a familiar framework for classical programmers and, at the same time, introduces a structured and powerful abstraction for high-level quantum-classical programming.
