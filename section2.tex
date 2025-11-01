@@ -22,9 +22,11 @@ However, this equational property is carefully constrained.
 If we define a copy function with inserting an identity unitary, $\delta_I \equiv \lambda x.\langle I\ x,x\rangle$, then $\pi_1\circ\delta_I\ne\lambda x.x$.
 The application of the unitary $I$ makes $I\ x$ a distinct physical instance from $x$; for example, the input state $\alpha\ket{0}+\beta\ket{1}$ becomes the entangled state $\alpha\ket{00}+\beta\ket{11}$.
 The evaluation procedure for this case is illustrated in Fig.~\ref{fig:grids}.
-This behavior does not violate the conservativity property of our language.
-Unitary operators like $I$ are separated from the classical fragment.
-The conservativity applies only to the common language, and equational laws are not expected to hold for terms containing unitaries.
+We can only hope that the equational theory is sound with respect to operational equivalence for the classical fragment without unitaries like $I$.
+
+% This behavior does not violate the soundness mentioned conservativity property of our language.
+% Unitary operators like $I$ are separated from the classical fragment.
+% The conservativity applies only to the common language, and equational laws are not expected to hold for terms containing unitaries.
 
 \begin{figure}[t]
   \centering
