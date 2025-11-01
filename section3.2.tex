@@ -2,7 +2,7 @@
 Our operational semantics relies on two key mathematical structures: $\ell^2$ \textit{space} to represent quantum states, and \textit{finite distributions} to model probabilistic reduction.
 
 \begin{dfn}[$\ell^2$ space]
-  Given a countable set $X$, define $\ell^2$ space as
+  Given a countable set $X$, the $\ell^2$ space is defined as the set:
   \begin{equation*}
     \ell^2(X) := \left\{\psi : X\to\mathbb{C}\ \left|\ \|\psi\| := \sum\nolimits_{x\in X} |\psi(x)|^2 < \infty \right.\right\},
   \end{equation*}
@@ -11,7 +11,7 @@ Our operational semantics relies on two key mathematical structures: $\ell^2$ \t
 \end{dfn}
 
 \begin{dfn}[Finite distributions]
-  Given a countable set $X$, define a set
+  The set of finite distributions over $X$ is defined as:
   \begin{equation*}
     \mathcal{D}(X) := \left\{\mu : X \to \ [0,1] \left|\ |\mu| := \sum\nolimits_{x\in X} \mu(x) = 1,\ |\mathrm{supp}(\mu)| < \infty\right.\right\}.
   \end{equation*}

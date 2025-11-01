@@ -1,7 +1,9 @@
 \section{Operational semantics}
 \subsection{Full definitions of operational semantics} \label{sec:opsem-full}
 The remaining part of the single-step reduction relation (Definition~\ref{def:single-step}) is the classical $\beta$-reduction rules, given in Fig.~\ref{fig:reduction-beta}.
-These rules are standard for call-by-value lambda calculus, and do not interact with the quantum store.
+These rules are standard for call-by-value lambda calculus.
+They are promoted to the full reduction relation $\longrightarrow$ by
+$[\sigma, M] \longrightarrow \delta_{[\sigma, M']}$ if $M \longrightarrow_\Lambda M'$.
 \begin{figure}[ht]
   \begin{mathpar}
     \inferrule*[right=$\beta$-Lam]
