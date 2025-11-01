@@ -1,5 +1,12 @@
 \section{Future work}
-We aim to develop both practical compilation techniques and theoretical extensions.
-An intermediate language will be designed to explicitly describe interactions between classical and quantum systems through lower-level quantum operations.
-Although the simply typed system is presented in Appendix~\ref{sec:type-system}, it can be extended with polymorphism and recursive types.
-We are also working on a denotational semantics to formalize the language's mathematical interpretations.
+This paper established that classical $\beta$-equivalence is preserved by contextual equivalence ($\leftrightarrow_\beta \Rightarrow \approx$), which justifies applying classical optimizations to the classical fragment.
+However, the converse, and thus a full conservative extension result for observational equivalence, fails.
+This is a necessary design choice, as the observational effect of measurement breaks $\eta$-equivalence for constructs like match, i.e., $\texttt{match}\ x\ [y\Rightarrow \texttt{inj}_0\ y\mid z\Rightarrow \texttt{inj}_1\ z] \not\approx x$.
+The true conservative extension property should relate the equational theories of the two calculi.
+Formulating this remains a significant open problem, as our probabilistic reduction relation ($[\sigma, M] \longrightarrow \mu$) requires a novel definition of an equivalence closure that can operate on distributions, a topic we leave for future investigation.
+
+
+%We aim to develop both practical compilation techniques and theoretical extensions.
+%An intermediate language will be designed to explicitly describe interactions between classical and quantum systems through lower-level quantum operations.
+%Although the simply typed system is presented in Appendix~\ref{sec:type-system}, it can be extended with polymorphism and recursive types.
+%We are also working on a denotational semantics to formalize the language's mathematical interpretations.

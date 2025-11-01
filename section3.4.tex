@@ -1,16 +1,20 @@
-\subsection{Conservativity}
-As mentioned in Section \ref{sec:intro}, the central design principle of our language is \textit{conservativity}; a formal guarantee that the quantum extension does not alter the original behavior of the classical fragment.
-Informally, this means that for any term, one may apply the classical reduction rules to the subterms that do not contain $\hat{U}$ without changing the overall behavior of the term.
+\subsection{Preservation of Classical Reasoning}
+As mentioned in Section \ref{sec:intro}, the central design principle of our language is that the quantum extension preserves the behavior of the classical fragment.
+This guarantee is essential for programmers and compilers, as it ensures that classical reasoning and standard optimizations remain valid.
+To formalize this, we first define contextual equivalence, which states that two terms are equivalent if their observable behaviors are identical in any context.
+A context $C[\cdot]$ is defined as a term with a single hole $[\cdot]$ in it.
+\begin{dfn}[Contextual equivalence] \label{def:contextual-equiv}
+  For $M, N \in \Lambda$, $M\approx N \Leftrightarrow_\mathrm{def} \forall C[\cdot]\in\Lambda(\mathcal{U}).\ C[M] \Downarrow \Leftrightarrow C[N] \Downarrow$.
+\end{dfn}
 
-Conservativity is then stated as the following theorem.
+Our main result shows that any classical $\beta$-equivalence is preserved in the full quantum language.
 The proof is given in Appendix \ref{sec:conserv-proof}.
-\begin{restatable}[Conservativity]{thm}{ConservTheorem} \label{thm:conservativity}
-  For all $M, N \in \Lambda$, $M \longleftrightarrow^*_\Lambda N$ iff $M \longleftrightarrow^* N$.
+\begin{restatable}[Preservation of $\beta$-equivalence]{thm}{ConservTheorem} \label{thm:conservativity}
+  For all $M, N \in \Lambda$, if $M \longleftrightarrow^*_\Lambda N$ then $M \approx N$.
 \end{restatable}
-This property cannot be proved for general operational equivalence other than $\beta$-equivalence since our language yields side-effects through measurement.
-Actually, $\eta$-equivalence of \texttt{match} does not hold in general.
-Consider the term $\texttt{match}\ x\ [y\Rightarrow \texttt{inj}_0\ y\mid z\Rightarrow \texttt{inj}_1\ z]$.
-In classical reduction, it is $\eta$-equivalent to $x$.
-However, $x$ can store a quantum state, and thus measuring it results in a probabilistic outcome.
 
-
+%This property cannot be proved for general operational equivalence other than $\beta$-equivalence since our language yields side-effects through measurement.
+%Actually, $\eta$-equivalence of \texttt{match} does not hold in general.
+%Consider the term $\texttt{match}\ x\ [y\Rightarrow \texttt{inj}_0\ y\mid z\Rightarrow \texttt{inj}_1\ z]$.
+%In classical reduction, it is $\eta$-equivalent to $x$.
+%However, $x$ can store a quantum state, and thus measuring it results in a probabilistic outcome.

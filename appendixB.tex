@@ -1,33 +1,12 @@
-\section{Proof of conservativity} \label{sec:conserv-proof}
-
-\begin{lem} \label{lem:classical-step}
-  For any $M \in \Lambda$, $\sigma$ and $\mu$, if $[\sigma, M] \longrightarrow^* \mu$ holds, then there exists $M' \in \Lambda$ such that $M \longrightarrow^*_\Lambda M'$.
-\end{lem}
-\begin{proof}
-  First, we prove that if $[\sigma, M] \longrightarrow \mu$ then $\exists M'. M \longrightarrow_\Lambda M'$ by induction on the derivation of $M \longrightarrow \mu$.
-  \begin{itemize}
-    \item Case $\beta$ rules: The same rule applies to $\longrightarrow_\Lambda$ and $\mu = \delta_{[\delta_\emptyset, M']}$.
-    \item Case \textsc{Q} rules: Impossible since each $M$ includes a unitary or locations, meaning $M \notin \Lambda$.
-  \end{itemize}
-  Then, the original statement is proved by simple induction on the derivation of $M \longrightarrow^* \mu$.
-\end{proof}
-
-Church-Rosser and confluence properties for the classical reduction directly follows from the determinism of $\longrightarrow_\Lambda$.
-\begin{lem}[Church-Rosser for classical reduction] \label{lem:classical-confluent}
+\section{Proof of Theorem \ref{thm:conservativity}} \label{sec:conserv-proof}
+Church-Rosser property for the classical reduction directly follows from the determinism of $\longrightarrow_\Lambda$.
+\begin{lem}[Church-Rosser for classical reduction] \label{lem:classical-CR}
   For any $M, N \in \Lambda$, if $M \longleftrightarrow^*_\Lambda N$ holds, then there exists $P \in \Lambda$ such that $M \longrightarrow^*_\Lambda P$ and $N \longrightarrow^*_\Lambda P$.
-\end{lem}
-\begin{lem}[Confluence for classical reduction] \label{lem:classical-confluent-single}
-  For any $M, N_1, N_2 \in \Lambda$, if $M \longrightarrow_\Lambda N_1$ and $M \longrightarrow_\Lambda N_2$ hold, then there exists $P \in \Lambda$ such that $N_1 \longrightarrow^*_\Lambda P$ and $N_2 \longrightarrow^*_\Lambda P$.
 \end{lem}
 
 \ConservTheorem*
 \begin{proof}[Proof]
-  ($\Rightarrow$)
-  By Lemma \ref{lem:classical-confluent}, there exists $P \in \Lambda$ such that $M \longrightarrow^*_\Lambda P$ and $N \longrightarrow^*_\Lambda P$.
-  Then, by defition of $\longrightarrow$, we have $[\delta_\emptyset, M] \longrightarrow^* \delta_{[\delta_\emptyset, P]}$ and $[\delta_\emptyset, N] \longrightarrow^* \delta_{[\delta_\emptyset, P]}$, which implies $M \longleftrightarrow^* N$.
-  \\
-  ($\Leftarrow$)
-  By the definition of $\longleftrightarrow^*$, there exists $\mu$ such that $[\delta_\emptyset, M] \longrightarrow^* \mu$ and $[\delta_\emptyset, N] \longrightarrow^* \mu$.
-  By Lemma \ref{lem:classical-step}, there exists $M', N' \in \Lambda$ such that $M \longrightarrow^*_\Lambda M'$ and $N \longrightarrow^*_\Lambda N'$.
-  By Lemma \ref{lem:classical-confluent}, there exists $P \in \Lambda$ such that $M' \longrightarrow^*_\Lambda P$ and $N' \longrightarrow^*_\Lambda P$; hence, we have $M \longleftrightarrow^*_\Lambda N$.
+  By applying Lemma \ref{lem:classical-CR}, there exists $P \in \Lambda$ such that $M \longrightarrow^*_\Lambda P$ and $N \longrightarrow^*_\Lambda P$.
+  Then, by congruence condition of $\longrightarrow^*$, $[\sigma, E[M]] \longrightarrow^* \delta_{[\sigma, E[P]]}$ and $[\sigma, E[N]] \longrightarrow^* \delta_{[\sigma, E[P]]}$ hold for any $\sigma$.
+  Therefore, we can state that $E[M]\Downarrow$ iff $E[N]\Downarrow$.
 \end{proof}

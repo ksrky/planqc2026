@@ -75,19 +75,16 @@ A key property to the physical realizability of the semantics is norm preservati
   If $[\sigma,M] \longrightarrow \mu$, then for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $||\sigma'|| = ||\sigma||$.
 \end{restatable}
 
-Since a single reduction step can yield a distribution of configurations, we cannot define reflexive and transitive closure of $\longrightarrow$.
-Instead, we lift the reduction relation to distributions over configurations.
-\begin{dfn}[Distributive reduction]
-  The distributive reduction relation $\Longrightarrow \subseteq \mathcal{D}(\mathcal{C})\times \mathcal{D}(\mathcal{C})$ is defined as: $\mu \Longrightarrow \mu'$ iff for each $[\sigma,M]\in\mathrm{supp}(\mu)$, there exists $\nu_{\sigma,M}$ such that $[\sigma,M] \longrightarrow \nu_{\sigma,M}$ and $\mu' = \sum_{[\sigma,M]\in\mathrm{supp}(\mu)} \mu([\sigma,M])\nu_{\sigma,M}$.
-  Reflexive and transitive closure $\Longrightarrow^*$ and equivalence closure $\Longleftrightarrow^*$ are defined as well.
+Since a single reduction step can yield a distribution of configurations, the \textit{multi-step reduction} ($\longrightarrow^*$) is not a simple reflexive and transitive closure. Instead, it is defined inductively to compose these probabilistic outcomes, akin to a monadic bind.
+\begin{dfn}[Multi-step reduction]
+  The multi-step reduction relation $\longrightarrow^*\subseteq \mathcal{C}\times \mathcal{D}(\mathcal{C})$ is the smallest relation satisfying:
+  \begin{itemize}
+    \item $[\sigma,M] \longrightarrow^*\delta_{[\sigma,M]}$ for all $[\sigma,M]\in\mathcal{C}$.
+    \item If $[\sigma,M] \longrightarrow \mu$ and for all $[\sigma',M']\in\mathrm{supp}(\mu)$, $[\sigma',M'] \longrightarrow^*\nu_{\sigma',M'}$, then $[\sigma,M] \longrightarrow\sum_{[\sigma',M']\in\mathrm{supp}(\mu)} \mu([\sigma',M'])\nu_{\sigma',M'}$.
+          % Each reduction step has finite probablistic branches; thus the summation is well-defined.
+  \end{itemize}
 \end{dfn}
 
-Then, we define an equivalence-like relation based on multi-step reduction.
-\begin{dfn}
-  For all $M, N \in \Lambda$, define $M \longleftrightarrow^* N$ iff
-  for any $\mu, \nu$, if $[\sigma, M] \in \mathrm{supp}(\mu)$ and $[\sigma, N] \in \mathrm{supp}(\nu)$ for some $\sigma$, then $\mu \Longleftrightarrow^* \nu$.
+\begin{dfn}[Termination]
+  A surface term $M$ is said to \emph{terminate}, denoted $M\Downarrow$, if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow\mu$, and for every $[\sigma, M'] \in \mathrm{supp}(\mu)$, $M'$ is a closed value.
 \end{dfn}
-
-%\begin{dfn}[Termination]
-%  A surface term $M$ is said to \emph{terminate}, denoted $M\Downarrow$, if there exists $\mu : \mathcal{V} \to [0,1]$ such that $[\delta_\emptyset, M] \longrightarrow\mu$, and for every $[\sigma, M'] \in \mathrm{supp}(\mu)$, $M'$ is a closed value.
-%\end{dfn}
