@@ -17,10 +17,10 @@ Typing judgements are defined on the runtime terms, which means they include typ
 In order to map locations to their types, we introduce the notion of store typing.
 \begin{dfn}[Store typing]
   A store typing $\Sigma$ is a finite mapping from locations to basis types.
-  A store $\sigma$ is well-typed under $\Sigma$, denoted $\vdash \sigma : \Sigma$, if for every $l\in\text{dom}(\Sigma)$, $\vdash \sigma(l) : \Sigma(l)$ holds.
+  A store $\sigma$ is well-typed under $\Sigma$, denoted $\Sigma \vdash \sigma$, if for every $l\in\text{dom}(\Sigma)$, $\vdash \sigma(l) : \Sigma(l)$ holds.
 \end{dfn}
 
-Similar to the definition of the reduction relation, we assume a typing judgement for $\hat{U}\in\mathcal{U}$ in the form of $\vdash_\mathcal{U} \hat{U} : \hat{A} \rightarrow \hat{B}$.
+Similar to the definition of the reduction relation, we impose an assumption for $\mathcal{U}$ : for each $\hat{U}$, there exists a typing judgement of the form: $\vdash_\mathcal{U} \hat{U} : \hat{A} \rightarrow \hat{B}$.
 \begin{dfn}[Typing judgments]
   Given a set of external typing judgements $\vdash_\mathcal{U} \hat{U} : \hat{A} \rightarrow \hat{B}$ for $\hat{U}\in\mathcal{U}$,
   A typing judgment is of the form $\Sigma \mid \Gamma \vdash M : A$.
@@ -87,14 +87,13 @@ Similar to the definition of the reduction relation, we assume a typing judgemen
   \Description{A set of inference rules defining the typing rules for the Lambda(U) calculus. The rules cover typing for locations, unit type, variable projection, lambda abstraction and application, tensor product introduction and elimination, sum type introduction and elimination, and operations from the set of unitaries. Each rule specifies how a term can be assigned a type based on its structure and the types of its components.}
 \end{figure}
 
-% safety properties
-We can show the standard type safety properties, i.e., subject reduction and progress.
+The standard type safety properties are expressed as follows.
 \begin{thm}[Subject reduction]
-  If $\Sigma\mid\Gamma \vdash M : A$, $[\sigma,M] \to [\sigma',M']$ and $\vdash \sigma : \Sigma$,
-  then there exists $\Sigma'$ such that $\Sigma' \mid \Gamma \vdash M^{*'} : A$ and $\vdash \sigma' : \Sigma'$.
+  If $\Sigma\mid\Gamma \vdash M : A$, $[\sigma,M] \to [\sigma',M']$ and $\Sigma \vdash \sigma$,
+  then there exists $\Sigma'$ such that $\Sigma' \mid \Gamma \vdash M' : A$ and $\vdash \sigma' : \Sigma'$.
 \end{thm}
 
 \begin{thm}[Progress]
   If $\Sigma \mid \Gamma \vdash M : A$,
-  then either $M$ is a value or there exists $\mu$ such that $[\sigma,M] \to \mu$.
+  then either $M$ is a value or there exists $\mu$ such that $[\sigma,M] \to \mu$ for any $\sigma$ with $\Sigma \vdash \sigma$.
 \end{thm}
